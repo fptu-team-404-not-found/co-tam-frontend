@@ -1,17 +1,27 @@
-import React from 'react';
-import  './Menu.scss';
+import React, { useState } from "react";
+import "./Menu.scss";
+import MenuIcon from "@mui/icons-material/Menu";
 
 export default function Menu() {
+  const [open, setOpen] = useState(true);
+
   return (
     <>
-        <ul className='menu-container'>
-            <li>Tài khoản</li>
-            <li>Dịch vụ</li>
-            <li>Khuyến mãi</li>
-            <li>Tòa nhà</li>
-            <li>Khu vực</li>
-            <li>Cài đặt</li>
-        </ul>
+      <div className="menu-container">
+        {open == true ? (
+          <ul className="menu-list-open">
+            <li className="menu-list-item active">Tài khoản</li>
+            <li className="menu-list-item">Dịch vụ</li>
+            <li className="menu-list-item">Khuyến mãi</li>
+            <li className="menu-list-item">Tòa nhà</li>
+            <li className="menu-list-item">Khu vực</li>
+            <li className="menu-list-item">Cài đặt</li>
+          </ul>
+        ) : undefined}
+      </div>
+      <button onClick={() => setOpen(!open)} className="menu-list-toggle">
+        <MenuIcon />
+      </button>
     </>
-  )
+  );
 }

@@ -1,0 +1,33 @@
+@use "../../App" as config;
+
+
+.navbar-container {
+  display: inline-flex;
+  
+  .css-1u3bzj6-MuiFormControl-root-MuiTextField-root {
+    width: 413px;
+    height: 56px;
+    margin-top: 72px !important;
+    margin-left: 48px !important;
+    border-radius: 12px;
+    background-color: rgba(21, 191, 129, 0.3);
+    border: none;
+  
+    .css-o9k5xi-MuiInputBase-root-MuiOutlinedInput-root {
+      border-radius: 12px;
+    }
+  }
+  
+  #navbar-add-btn {
+      display: inline-flex;
+      background-color: rgba(21, 191, 129, 0.5);;
+      padding: 8px 24px;
+      color: config.$sub-color;
+      border-radius: 8px;
+      height: 56px;
+      margin-top: 72px;
+      margin-left: 40px;
+      font-size: config.$font-size-text;
+  }
+}
+

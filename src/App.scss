@@ -4,3 +4,10 @@ $primary-color: #15BF81;
 $secondary-color: #fff;
 $sub-color: #000;
 $font-primary: 'Roboto', sans-serif;
+$font-size-header-big: 36px;
+$font-size-text: 18px;
+
+* {
+    box-sizing: border-box;
+    font-family: $font-primary;
+}

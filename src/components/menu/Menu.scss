@@ -1,3 +1,59 @@
+@use '../../App' as config;
+
 .menu-container {
-    background-color: #15BF81;
+    float: left;
+    background-color: config.$primary-color;
+    .menu-list-open {
+        padding-top: 226px;
+        margin: 0;
+        height: 100vh;
+        width: 240px;
+        padding-left: 0;
+        display: flex;
+        flex-direction: column;
+        .menu-list-item {
+            width: 100%;
+            align-items: center;
+            justify-content: center;
+            vertical-align: middle;
+            list-style-type: none; 
+            padding-left: 48px;
+            line-height: 75px;
+            height: 75px;
+            font-size: config.$font-size-text;
+            color: config.$secondary-color;
+            &:hover {
+                background: rgba(255, 255, 255, 0.5);
+                cursor: pointer;
+                border: 0.2px solid config.$secondary-color;
+            }
+        }
+        .active {
+            background: rgba(255, 255, 255, 0.5);
+            cursor: pointer;
+            &:hover {
+                border: none;
+            }
+        }
+    }
+
+}
+
+.menu-list-toggle {
+    display: inline-flex;
+    clear: both;
+    align-items: center;
+    height: 36px;
+    line-height: 36px;
+    width: 36px;
+    margin-left: 32px;
+    margin-top: 80px;
+    border: none;
+    background-color: config.$secondary-color;
+    &:hover {
+        background-color: config.$primary-color;
+        cursor: pointer;
+        border-radius: 4px;
+        color: config.$secondary-color;
+    }
 }
