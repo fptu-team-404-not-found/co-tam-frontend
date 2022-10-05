@@ -3,7 +3,6 @@
 
 .navbar-container {
   display: inline-flex;
-  
   .css-1u3bzj6-MuiFormControl-root-MuiTextField-root {
     width: 413px;
     height: 56px;
@@ -20,14 +19,17 @@
   
   #navbar-add-btn {
       display: inline-flex;
-      background-color: rgba(21, 191, 129, 0.5);;
+      background-color: rgba(21, 191, 129, 0.8);;
       padding: 8px 24px;
-      color: config.$sub-color;
+      color: config.$secondary-color;
       border-radius: 8px;
       height: 56px;
       margin-top: 72px;
       margin-left: 40px;
       font-size: config.$font-size-text;
+      &:hover {
+        background-color: config.$primary-color;
+      }
   }
 }
 

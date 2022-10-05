@@ -1,0 +1,31 @@
+@use "../../App" as config;
+
+.account-container {
+    .account-table-container {
+        height: 580px;
+        font-size: config.$font-size-text;
+        width: 100%;
+        text-indent: 24px;
+        .css-1jbbcbn-MuiDataGrid-columnHeaderTitle {
+            font-weight: 600 !important;
+            font-size: config.$font-size-text;
+        }
+        .css-1e2bxag-MuiDataGrid-root {
+            font-size: config.$font-size-text;
+            padding: 0 24px;
+            border: none;
+        }
+        .css-f3jnds-MuiDataGrid-columnHeaders {
+            border-bottom: 1px solid config.$primary-color;
+        }
+        .css-1e2bxag-MuiDataGrid-root .MuiDataGrid-cell {
+            border-bottom: 1px solid rgba(21, 191, 129, 0.3);
+        }
+        .css-jsexje-MuiSwitch-thumb {
+            background-color: config.$primary-color;
+        }
+        .css-5ryogn-MuiButtonBase-root-MuiSwitch-switchBase.Mui-checked+.MuiSwitch-track {
+            background-color: config.$primary-color;
+        }
+    }
+}
