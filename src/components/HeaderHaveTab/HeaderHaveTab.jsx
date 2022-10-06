@@ -3,25 +3,25 @@ import "./HeaderHaveTab.scss";
 import Account from "../account/AccountHouseWorker";
 import AccountHouseWorker from "../account/AccountHouseWorker";
 import AccountCustomer from "../account/AccountCustomer";
-import { Link } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 
-export default function HeaderHaveTab(header) {
+export default function HeaderHaveTab(header, tab) {
   const [value, setValue] = useState(0);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
-    console.log(value);
   };
 
   return (
     <>
-      <Tabs value={value} onChange={handleChange}>
-        <Tab label="Nhân viên" component={Link} to="/" />
+      <Tabs id="headerHaveTab-tab-container" onChange={handleChange}>
+        <Tab className="headerHaveTab-tab" label="Nhân viên" component={NavLink} to="/accounthouseworker" />
         <Tab
+          className="headerHaveTab-tab"
           label="Khách hàng"
-          component={Link}
+          component={NavLink}
           to="/accountcustomer"
         />
       </Tabs>

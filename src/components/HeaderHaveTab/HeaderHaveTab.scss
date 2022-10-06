@@ -8,3 +8,23 @@
     margin-top: 40px;
     text-indent: 40px;
 }
+
+#headerHaveTab-tab-container {
+    float: right;
+    margin-top: 168px;
+    margin-right: 48px;
+    .headerHaveTab-tab {
+        background-color: rgba(21, 191, 129, 0.5);
+        margin-left: 16px;
+        font-size: config.$font-size-text;
+        color: config.$secondary-color;
+        border-radius: 12px;
+    }
+    .active {
+        background: config.$primary-color;
+        cursor: pointer;
+        &:hover {
+            border: none;
+        }
+    }
+}

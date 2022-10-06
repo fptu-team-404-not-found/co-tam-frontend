@@ -14,10 +14,9 @@
         .menu-list-item {
             width: 100%;
             align-items: center;
-            justify-content: center;
+            padding-left: 56px;
             vertical-align: middle;
             list-style-type: none; 
-            padding-left: 48px;
             line-height: 75px;
             height: 75px;
             font-size: config.$font-size-text;
@@ -26,16 +25,17 @@
                 background: rgba(255, 255, 255, 0.5);
                 cursor: pointer;
             }
+            
         }
-        .active {
-            background: rgba(255, 255, 255, 0.5);
-            cursor: pointer;
-            &:hover {
-                border: none;
-            }
+        
+    }
+    .active {
+        background: rgba(255, 255, 255, 0.5);
+        cursor: pointer;
+        &:hover {
+            border: none;
         }
     }
-
 }
 
 .menu-list-toggle {
@@ -56,3 +56,5 @@
         color: config.$secondary-color;
     }
 }
+
+

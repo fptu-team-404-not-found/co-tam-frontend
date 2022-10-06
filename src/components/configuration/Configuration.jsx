@@ -6,7 +6,7 @@ import Switch from "@mui/material/Switch";
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 
-import Header from "../Header/Header";
+import Header from "../header/Header";
 import Navbar from "../nav/Navbar";
 import "./Configuration.scss";
 

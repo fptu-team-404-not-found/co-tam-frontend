@@ -21,9 +21,12 @@ function App() {
       <Routes>
         <Route path='/' element={<AccountHouseWorker />} />
         <Route path='/accountcustomer' element={<AccountCustomer />}/>
+        <Route path='/accounthouseworker' element={<AccountHouseWorker />}/>
         <Route path='/service' element={<Service />}/>
-        <Route />
-        <Route />
+        <Route path='/promotion' element={<Promotion />}/>
+        <Route path='/building' element={<Building />}/>
+        <Route path='/area' element={<Area />}/>
+        <Route path='/configuration' element={<Configuration />}/>
       </Routes>
     </>
   );

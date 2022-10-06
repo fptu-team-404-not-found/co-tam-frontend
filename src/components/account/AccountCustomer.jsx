@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 
-import Header from "../Header/Header";
+import Header from "../header/Header";
 import Navbar from "../nav/Navbar";
 import "./Account.scss";
 import { DataGrid } from "@mui/x-data-grid";
@@ -16,10 +16,10 @@ export default function AccountCustomer() {
   const label = { inputProps: { "aria-label": "Switch demo" } };
 
   const columns = [
-    { field: "name", headerName: "Họ tên", width: 330 },
-    { field: "email", headerName: "Email", width: 330 },
+    { field: "name", headerName: "Họ tên", width: 400 },
+    { field: "email", headerName: "Email", width: 400 },
     { field: "phone", headerName: "Số điện thoại", width: 240 },
-    { field: "dateJoin", headerName: "Ngày tham gia", width: 240 },
+    { field: "dateJoin", headerName: "Ngày tham gia", width: 360 },
     {
       field: "action",
       headerName: "Action",
@@ -50,7 +50,7 @@ export default function AccountCustomer() {
     <>
       <div className="account-container">
         <Navbar />
-        <HeaderHaveTab title="Danh sách tài khoản" />
+        <HeaderHaveTab value="1" title="Danh sách tài khoản khách hàng" />
         <div className="account-table-container">
           <DataGrid
             rows={data}

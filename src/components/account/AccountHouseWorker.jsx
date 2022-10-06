@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 
-import Header from "../Header/Header";
+import Header from "../header/Header";
 import Navbar from "../nav/Navbar";
 import "./Account.scss";
 import { DataGrid } from "@mui/x-data-grid";
@@ -51,7 +51,7 @@ export default function AccountHouseWorker() {
     <>
       <div className="account-container">
         <Navbar />
-        <HeaderHaveTab title="Danh sách tài khoản" />
+        <HeaderHaveTab value="0" title="Danh sách tài khoản nhân viên" />
         <div className="account-table-container">
           <DataGrid
             rows={data}

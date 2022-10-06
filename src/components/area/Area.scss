@@ -1,6 +1,11 @@
 @use "../../App" as config;
 
 .area-container {
+    .css-1e2bxag-MuiDataGrid-root .MuiDataGrid-row {
+        &:hover {
+            background-color: rgba(21, 191, 129, 0.1);
+        }
+    }
     .area-table-container {
         height: 580px;
         font-size: config.$font-size-text;
