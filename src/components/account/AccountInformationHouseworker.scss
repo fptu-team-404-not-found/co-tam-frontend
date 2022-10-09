@@ -1,0 +1,65 @@
+@use "../../App" as config;
+
+.accountInformation-container {
+  text-indent: 40px;
+  margin-top: 48px;
+
+  .accountInformation-btn-back {
+    display: inline-flex;
+    vertical-align: middle;
+  }
+  .accountInformation-breadcrumbs {
+    display: inline-flex;
+    justify-content: flex-start;
+    margin-left: 24px;
+  }
+  .MuiBreadcrumbs-li {
+    margin-left: -24px;
+    a {
+      text-decoration: none;
+      color: config.$sub-color;
+      opacity: 40%;
+      &:hover {
+        opacity: 100%;
+      }
+    }
+  }
+}
+.accountInformation-img {
+  width: 160px;
+  height: 160px;
+  margin-left: 96px;
+  object-fit: cover;
+  margin-top: 48px;
+  border-radius: 50%;
+  padding: 8px;
+  border: 1px solid config.$primary-color;
+  float: left;
+}
+
+.accountInformation-text-container {
+  position: relative;
+  border: 1px solid config.$primary-color;
+  width: 1233px;
+  height: 247px;
+  float: left;
+  margin-left: 88px;
+  border-radius: 16px;
+  padding: 24px;
+  margin-top: 8px;
+  th {
+    width: 200px;
+  }
+  th, td {
+    border-collapse: collapse;
+    font-size: config.$font-size-text;
+    padding: 5px;
+    text-align: left;
+  }
+  .accountInformation-btn-edit {
+    position: absolute;
+    right: 16px;
+    top: 16px;
+    color: config.$primary-color;
+  }
+}

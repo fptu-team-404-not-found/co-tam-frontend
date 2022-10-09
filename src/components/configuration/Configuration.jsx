@@ -13,13 +13,11 @@ import "./Configuration.scss";
 
 export default function Configuration() {
   
-
-
   return (
     <>
       <div className="configuration-container">
         <Navbar />
-        <Header title="Cài đặt" />
+        <Header title="Thông tin" />
         <p className="configuration-infor">Hello</p>
       </div>
     </>

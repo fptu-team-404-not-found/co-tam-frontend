@@ -1,0 +1,89 @@
+@use "../../App" as config;
+
+.createNewArea-container {
+    text-indent: 40px;
+    margin-top: 48px;
+  
+    .createNewArea-btn-back {
+      display: inline-flex;
+      vertical-align: middle;
+    }
+    .createNewArea-breadcrumbs {
+      display: inline-flex;
+      justify-content: flex-start;
+      margin-left: 24px;
+    }
+    .MuiBreadcrumbs-li {
+      margin-left: -24px;
+      a {
+        text-decoration: none;
+        color: config.$sub-color;
+        opacity: 40%;
+        &:hover {
+          opacity: 100%;
+        }
+      }
+    }
+  }
+
+  #createNewArea-form-container {
+    border: 4px solid config.$primary-color;
+    border-radius: 16px;
+    margin-left: 72px;
+    margin-top: 40px;
+    padding: 48px;
+    .createNewArea-create-area-container {
+        margin-bottom: 48px;
+        font-size: config.$font-size-text;
+        .createNewArea-label {
+            display: inline-table;
+            width: 160px;
+        }
+        label[data-shrink=false]+.MuiInputBase-formControl .css-11u53oe-MuiSelect-select-MuiInputBase-input-MuiOutlinedInput-input, .css-11u53oe-MuiSelect-select-MuiInputBase-input-MuiOutlinedInput-input.css-11u53oe-MuiSelect-select-MuiInputBase-input-MuiOutlinedInput-input.css-11u53oe-MuiSelect-select-MuiInputBase-input-MuiOutlinedInput-input {
+            width: 443px;
+            border: 1px solid rgba(21, 191, 129, 0.5);
+            outline: none;
+        }
+        .css-1d3z3hw-MuiOutlinedInput-notchedOutline {
+            top: 0;
+        }
+        legend {
+            display: none;
+        }
+      }
+      .createNewArea-btn-container {
+        justify-content: center;
+        display: inline-flex;
+        margin-top: 24px;
+        .createNewArea-btn {
+            width: 169px;
+            height: 56px;
+            margin-left: 24px;
+            font-size: config.$font-size-text;
+            border: none;
+            border-radius: 20px;
+            background-color: config.$primary-color;
+            opacity: 80%;
+            color: config.$secondary-color;
+            font-weight: 500;
+            letter-spacing: 0.04em;
+            &:hover {
+                opacity: 100%;
+                cursor: pointer;
+            }
+            &:nth-child(2) {
+                background-color: rgba(21, 191, 129, 0.5);
+                &:hover {
+                    opacity: 100%;
+                    background-color: config.$primary-color;
+                    cursor: pointer;
+                }
+            }
+        }
+      }
+      
+  }
+
+  
+
+  
