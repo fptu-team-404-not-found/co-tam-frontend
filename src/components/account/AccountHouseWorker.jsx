@@ -10,8 +10,11 @@ import HeaderHaveTab from "../HeaderHaveTab/HeaderHaveTab";
 
 const getAPI = "https://633cfec07e19b17829057a5a.mockapi.io/account/account";
 
-export default function AccountHouseWorker() {
+export default function AccountHouseWorker(props) {
   const [data, setData] = useState([]);
+  const [open, setOpen] = useState(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
 
   const label = { inputProps: { "aria-label": "Switch demo" } };
 
@@ -27,13 +30,10 @@ export default function AccountHouseWorker() {
       sortable: false,
       width: 200,
       renderCell: (params) => {
-        const onClick = (e) => {
-        };
-  
-        return (
-          <Switch onClick={onClick} defaultChecked/>
-        );
-      }
+        const onClick = (e) => {};
+
+        return <Switch onClick={onClick} defaultChecked />;
+      },
     },
   ];
 
@@ -46,11 +46,10 @@ export default function AccountHouseWorker() {
     fetchData();
   }, [data]);
 
-
   return (
     <>
       <div className="account-container">
-        <Navbar />
+        <Navbar openModal2={open} handleOpen={handleOpen} handleClose={handleClose}/>
         <HeaderHaveTab value="0" title="Danh sách tài khoản nhân viên" />
         <div className="account-table-container">
           <DataGrid

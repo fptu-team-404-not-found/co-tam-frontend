@@ -18,12 +18,14 @@ import AccountInformationCustomer from './components/account/AccountInformationC
 import AccountInformationHouseworker from './components/account/AccountInformationHouseworker';
 import CreateNewArea from './components/area/CreateNewArea';
 import CreateNewBuilding from './components/building/CreateNewBuilding';
+import CreateNewPromotion from './components/promotion/CreateNewPromotion';
+import CreateNewService from './components/service/CreateNewService';
 
 function App() {
   return (
     <>
       <Routes>
-        <Route path='/' element={<CreateNewBuilding />} />
+        <Route path='/' element={<CreateNewService />} />
         <Route path='/accountcustomer' element={<AccountCustomer />}/>
         <Route path='/accounthouseworker' element={<AccountHouseWorker />}/>
         <Route path='/service' element={<Service />}/>

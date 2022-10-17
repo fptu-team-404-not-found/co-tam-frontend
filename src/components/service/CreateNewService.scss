@@ -1,0 +1,241 @@
+@use "../../App" as config;
+
+.createNewService-container {
+  text-indent: 40px;
+  margin-top: 48px;
+
+  .createNewService-btn-back {
+    display: inline-flex;
+    vertical-align: middle;
+  }
+  .createNewService-breadcrumbs {
+    display: inline-flex;
+    justify-content: flex-start;
+    margin-left: 24px;
+  }
+  .MuiBreadcrumbs-li {
+    margin-left: -24px;
+    a {
+      text-decoration: none;
+      color: config.$sub-color;
+      opacity: 40%;
+      &:hover {
+        opacity: 100%;
+      }
+    }
+  }
+}
+
+#createNewService-form-container {
+  font-size: config.$font-size-text;
+  border: 4px solid config.$primary-color;
+  border-radius: 16px;
+  margin-left: 72px;
+  margin-top: 18px;
+  padding: 48px;
+  width: 72vw;
+    
+  .css-1yk1gt9-MuiInputBase-root-MuiOutlinedInput-root-MuiSelect-root {
+    border: none;
+    .css-11u53oe-MuiSelect-select-MuiInputBase-input-MuiOutlinedInput-input {
+      border: none;
+      border-radius: 12px;
+    }
+    .css-11u53oe-MuiSelect-select-MuiInputBase-input-MuiOutlinedInput-input.MuiSelect-select {
+      padding: 8px;
+      width: 100px;
+      border: 1px solid rgba(21, 191, 129, 0.5);  
+    }
+    .css-1d3z3hw-MuiOutlinedInput-notchedOutline {
+      border: none;
+    }
+  }
+  
+  .css-46bh2p-MuiCardContent-root:last-child {
+    padding-bottom: 0;
+  }
+  .createNewService-package-btn-save {
+    display: flex;
+    margin: 0 auto;
+    margin-top: 8px;
+    margin-bottom: 8px;
+    background-color: rgba(21, 191, 129, 0.8);
+    border-radius: 8px;
+    color: config.$secondary-color;
+    &:hover {
+      background-color: config.$primary-color;
+    }
+  }
+  .createNewService-container-side {
+    display: inline-flex;
+  }
+  .css-1ufkgsz-MuiPaper-root-MuiCard-root {
+    border: 1px solid rgba(21, 191, 129, 0.5);
+    transition: none;
+    box-shadow: none;
+    border-radius: 12px;
+    margin-top: 8px;
+    width: 300px;
+    position: relative;
+  }
+  .createNewService-create-service-container-createExtraService {
+    height: 440px;
+    overflow-y: scroll;
+    width: 540px;
+    &::-webkit-scrollbar {
+      height: 4px;
+      width: 4px;
+    }
+     
+    /* Handle */
+    &::-webkit-scrollbar-thumb {
+      background: rgba(21, 191, 129, 0.5);
+      border-radius: 4px;
+    }
+    
+    /* Handle on hover */
+    &::-webkit-scrollbar-thumb:hover {
+      background: config.$primary-color; 
+    }
+  }
+  .createNewService-create-service-container-side {
+    width: 500px;
+    display: block;
+    margin-right: 80px;
+    height: 100px;
+    position: relative;
+    .createNewService-btn-add-extraService {
+      position: absolute;
+      padding-right: 16px;
+      right: 0;
+      top: 180px;
+      background-color: rgba(21, 191, 129, 0.8);
+      color: config.$secondary-color;
+      vertical-align: middle;
+      &:hover {
+        background-color: config.$primary-color;
+      }
+    }
+    .createNewService-btn-close {
+      position: absolute;
+      right: 8px;
+      top: 8px;
+      color: config.$primary-color;
+      &:hover {
+        background-color: config.$primary-color;
+        color: config.$secondary-color;
+        border-radius: 50%;
+        cursor: pointer;
+      }
+    }
+  }
+  
+  .createNewService-package-container-all {
+    .createNewService-package-label {
+      display: inline-table;
+      width: 120px;
+      margin-bottom: 16px;
+    }
+    .createNewService-package-input {
+      padding: 8px;
+      width: 187px;
+      border: 1px solid rgba(21, 191, 129, 0.5);
+      border-radius: 8px;
+    }
+    .createNewService-package-textarea {
+      padding: 8px;
+      width: 308px;
+      border: 1px solid rgba(21, 191, 129, 0.5);
+      border-radius: 8px;
+      height: 154px;
+      resize: none;
+    }
+  }
+  .createNewService-create-service-container-side-createPackage {
+    width: 500px;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    display: block;
+    margin-right: 48px;
+    height: calc(8*42px);
+    position: relative;
+    .createNewService-btn-add {
+      padding-right: 16px;
+      position: absolute;
+      right: 0;
+      background-color: rgba(21, 191, 129, 0.8);
+      color: config.$secondary-color;
+      vertical-align: middle;
+      &:hover {
+        background-color: config.$primary-color;
+      }
+    }
+    &::-webkit-scrollbar {
+      height: 4px;
+      width: 4px;
+    }
+     
+    /* Handle */
+    &::-webkit-scrollbar-thumb {
+      background: rgba(21, 191, 129, 0.5);
+      border-radius: 4px;
+    }
+    
+    /* Handle on hover */
+    &::-webkit-scrollbar-thumb:hover {
+      background: config.$primary-color; 
+    }
+  }
+  .createNewService-create-service-container {
+    margin-bottom: 48px;
+    font-size: config.$font-size-text;
+
+    .createNewService-label {
+      display: block;
+      margin-bottom: 8px;
+    }
+    .createNewService-input {
+      width: 500px;
+      border: 1px solid rgba(21, 191, 129, 0.5);
+      padding: 16px 16px;
+      font-size: config.$font-size-text;
+      border-radius: 8px;
+    }
+    .css-1d3z3hw-MuiOutlinedInput-notchedOutline {
+      top: 0;
+    }
+    legend {
+      display: none;
+    }
+  }
+  .createNewService-btn-container {
+    display: inline-flex;
+    justify-content: center;
+    margin-top: 16px;
+    .createNewService-btn {
+      width: 169px;
+      height: 56px;
+      margin-left: 24px;
+      font-size: config.$font-size-text;
+      border: none;
+      border-radius: 20px;
+      background-color: config.$primary-color;
+      opacity: 80%;
+      color: config.$secondary-color;
+      font-weight: 500;
+      letter-spacing: 0.04em;
+      &:hover {
+        opacity: 100%;
+        cursor: pointer;
+      }
+      &:nth-child(2) {
+        background-color: rgba(21, 191, 129, 0.5);
+        &:hover {
+          opacity: 100%;
+          background-color: config.$primary-color;
+          cursor: pointer;
+        }
+      }
+    }
+  }
+}
