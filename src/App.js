@@ -20,12 +20,14 @@ import CreateNewArea from './components/area/CreateNewArea';
 import CreateNewBuilding from './components/building/CreateNewBuilding';
 import CreateNewPromotion from './components/promotion/CreateNewPromotion';
 import CreateNewService from './components/service/CreateNewService';
+import AccountManager from './components/account/AccountManager';
 
 function App() {
   return (
     <>
       <Routes>
         <Route path='/' element={<CreateNewService />} />
+        <Route path='/accountmanager' element={<AccountManager />} />
         <Route path='/accountcustomer' element={<AccountCustomer />}/>
         <Route path='/accounthouseworker' element={<AccountHouseWorker />}/>
         <Route path='/service' element={<Service />}/>

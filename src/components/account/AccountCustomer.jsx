@@ -8,7 +8,7 @@ import { DataGrid } from "@mui/x-data-grid";
 import Switch from "@mui/material/Switch";
 import HeaderHaveTab from "../HeaderHaveTab/HeaderHaveTab";
 import { Button, Modal } from "@mui/material";
-import HighlightOffIcon from '@mui/icons-material/HighlightOff';
+import HighlightOffIcon from "@mui/icons-material/HighlightOff";
 import AddIcon from "@mui/icons-material/Add";
 import { Box } from "@mui/system";
 
@@ -25,38 +25,67 @@ export default function AccountCustomer() {
   const columns = [
     { field: "name", headerName: "Họ tên", width: 400 },
     { field: "email", headerName: "Email", width: 400 },
-    { field: "phone", headerName: "Số điện thoại", width: 240 },
-    { field: "dateJoin", headerName: "Ngày tham gia", width: 360 },
     {
-      field: "action",
+      field: "phone",
+      headerName: "Số điện thoại",
+      width: 240,
+      renderCell: (data) => {
+        return data.value != null ? data.value : "-";
+      },
+    },
+    {
+      field: "dateOfBirth",
+      headerName: "Ngày sinh nhật",
+      width: 360,
+      renderCell: (data) => {
+        return data.value != null ? data.value : "-";
+      },
+    },
+    {
+      field: "active",
       headerName: "Action",
       sortable: false,
       width: 200,
-      renderCell: (params) => {
-        const onClick = (e) => {
+      renderCell: (data) => {
+        const onDelete = (id) => {
+          axios.delete(getAPI + `/${id}`).then(() => {
+            getData();
+          });
         };
-  
-        return (
-          <Switch onClick={onClick} defaultChecked/>
+
+        return data.value ? (
+          <Switch
+            value={data.value}
+            onClick={() => onDelete(data.id)}
+            defaultChecked
+          />
+        ) : (
+          <Switch value={data.value} onClick={() => onDelete(data.id)} />
         );
-      }
+      },
     },
   ];
 
-  useEffect(() => {
+  const getData = useEffect(() => {
     const fetchData = async () => {
-      await axios.get(getAPI).then((res) => {
-        setData(res.data.data);
-      });
+      await axios
+        .get(getAPI, {
+          params: {
+            pageIndex: 1,
+            pageSize: 8,
+          },
+        })
+        .then((res) => {
+          setData(res.data.data);
+        });
     };
     fetchData();
   }, [data]);
 
-
   return (
     <>
       <div className="account-container">
-        <Navbar open={open} handleOpen={handleOpen} handleClose={handleClose}/>
+        <Navbar open={open} handleOpen={handleOpen} handleClose={handleClose} />
         <HeaderHaveTab value="1" title="Danh sách tài khoản khách hàng" />
         <div className="account-table-container">
           <DataGrid

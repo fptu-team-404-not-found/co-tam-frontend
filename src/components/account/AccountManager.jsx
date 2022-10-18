@@ -7,10 +7,14 @@ import "./Account.scss";
 import { DataGrid } from "@mui/x-data-grid";
 import Switch from "@mui/material/Switch";
 import HeaderHaveTab from "../HeaderHaveTab/HeaderHaveTab";
+import { Button, Modal } from "@mui/material";
+import HighlightOffIcon from "@mui/icons-material/HighlightOff";
+import AddIcon from "@mui/icons-material/Add";
+import { Box } from "@mui/system";
 
-const getAPI = "https://cotam.azurewebsites.net/api/houseworkers";
+const getAPI = "https://cotam.azurewebsites.net/api/managers";
 
-export default function AccountHouseWorker(props) {
+export default function AccountManager() {
   const [data, setData] = useState([]);
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
@@ -81,8 +85,8 @@ export default function AccountHouseWorker(props) {
   return (
     <>
       <div className="account-container">
-        <Navbar openModal2={open} handleOpen={handleOpen} handleClose={handleClose}/>
-        <HeaderHaveTab value="0" title="Danh sách tài khoản nhân viên" />
+        <Navbar open={open} handleOpen={handleOpen} handleClose={handleClose} />
+        <HeaderHaveTab value="1" title="Danh sách tài khoản khách hàng" />
         <div className="account-table-container">
           <DataGrid
             rows={data}
