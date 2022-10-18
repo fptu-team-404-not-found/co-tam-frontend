@@ -21,12 +21,14 @@ import CreateNewBuilding from './components/building/CreateNewBuilding';
 import CreateNewPromotion from './components/promotion/CreateNewPromotion';
 import CreateNewService from './components/service/CreateNewService';
 import AccountManager from './components/account/AccountManager';
+import Order from './components/order/Order';
+import Login from './components/login/Login';
 
 function App() {
   return (
     <>
       <Routes>
-        <Route path='/' element={<CreateNewService />} />
+        <Route path='/' element={<Login />} />
         <Route path='/accountmanager' element={<AccountManager />} />
         <Route path='/accountcustomer' element={<AccountCustomer />}/>
         <Route path='/accounthouseworker' element={<AccountHouseWorker />}/>

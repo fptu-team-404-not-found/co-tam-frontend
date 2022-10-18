@@ -3,13 +3,12 @@ import axios from "axios";
 
 import { DataGrid } from "@mui/x-data-grid";
 import Switch from "@mui/material/Switch";
-import EditIcon from '@mui/icons-material/Edit';
-import DeleteIcon from '@mui/icons-material/Delete';
+import EditIcon from "@mui/icons-material/Edit";
+import DeleteIcon from "@mui/icons-material/Delete";
 
 import Header from "../header/Header";
 import Navbar from "../nav/Navbar";
 import "./Service.scss";
-
 
 const getAPI = "https://cotam.azurewebsites.net/api/services";
 
@@ -19,46 +18,57 @@ export default function Service() {
   const columns = [
     { field: "name", headerName: "Dịch vụ", width: 400 },
     { field: "price", headerName: "Giá", width: 330 },
-    { field: "extraServices", headerName: "Dịch vụ nâng cao", width: 700 },
+    {
+      field: "extraServices",
+      headerName: "Dịch vụ nâng cao",
+      width: 700,
+      renderCell: (data) => {
+        return data.value == [] ? '-' : data.value
+      },
+    },
     {
       field: "edit",
       headerName: "",
       sortable: false,
       width: 80,
       renderCell: (params) => {
-        const onClick = (e) => {
-        };
-  
+        const onClick = (e) => {};
+
         return (
-          <EditIcon style={{ color: '#15BF81' }} onClick={onClick} defaultChecked/>
+          <EditIcon
+            style={{ color: "#15BF81" }}
+            onClick={onClick}
+            defaultChecked
+          />
         );
-      }
+      },
     },
     {
-        field: "delete",
-        headerName: "",
-        sortable: false,
-        renderCell: (params) => {
-          const onClick = (e) => {
-          };
-    
-          return (
-            <DeleteIcon style={{ color: '#FB5C5C' }} onClick={onClick} defaultChecked/>
-          );
-        }
+      field: "delete",
+      headerName: "",
+      sortable: false,
+      renderCell: (params) => {
+        const onClick = (e) => {};
+
+        return (
+          <DeleteIcon
+            style={{ color: "#FB5C5C" }}
+            onClick={onClick}
+            defaultChecked
+          />
+        );
       },
+    },
   ];
 
   useEffect(() => {
     const fetchData = async () => {
       await axios.get(getAPI).then((res) => {
         setData(res.data.data);
-        console.log(res.data)
       });
     };
     fetchData();
   }, []);
-
 
   return (
     <>

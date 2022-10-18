@@ -1,26 +1,52 @@
-import React, { useEffect, useState } from "react";
-import axios from "axios";
-
-import { DataGrid } from "@mui/x-data-grid";
 import Switch from "@mui/material/Switch";
-import EditIcon from "@mui/icons-material/Edit";
-import DeleteIcon from "@mui/icons-material/Delete";
-
+import { DataGrid } from "@mui/x-data-grid";
+import axios from "axios";
+import React, { useEffect, useState } from "react";
 import Header from "../header/Header";
 import Navbar from "../nav/Navbar";
-import "./Area.scss";
+import EditIcon from "@mui/icons-material/Edit";
 
-const getAPI = "https://cotam.azurewebsites.net/api/areas";
+const getAPI = "https://cotam.azurewebsites.net/api/orders";
 
-export default function Area() {
+export default function Order() {
   const [data, setData] = useState([]);
 
   const label = { inputProps: { "aria-label": "Switch demo" } };
 
   const columns = [
-    { field: "name", headerName: "Tên khu vực", width: 480 },
-    { field: "district", headerName: "Quận", width: 480 },
-    { field: "city", headerName: "Tỉnh/Thành phố", width: 480 },
+    { field: "dateTime", headerName: "Ngày", width: 300 },
+    {
+      field: "package",
+      headerName: "Số lượng nhân viên",
+      width: 300,
+      renderCell: (data) => {
+        return `${data.value.numberOfWorker} người`;
+      },
+    },
+    {
+      field: "paymentMethod",
+      headerName: "Phương thức thanh toán",
+      width: 300,
+      renderCell: (data) => {
+        return data.value.name;
+      },
+    },
+    {
+      field: "promotion",
+      headerName: "Khuyến mãi",
+      width: 300,
+      renderCell: (data) => {
+        return data.value === null ? 'Không sử dụng' : data.value
+      },
+    },
+    {
+        field: "total",
+        headerName: "Tổng thanh toán",
+        width: 300,
+        renderCell: (data) => {
+          return `${data.value} VNĐ`
+        },
+      },
     {
       field: "edit",
       headerName: "",
@@ -35,27 +61,6 @@ export default function Area() {
             onClick={onClick}
             defaultChecked
           />
-        );
-      },
-    },
-    {
-      field: "active",
-      headerName: "",
-      sortable: false,
-      renderCell: (data) => {
-        const onDelete = (id) => {
-          axios.delete(getAPI + `/${id}`).then(() => {
-            getData();
-          });
-        };
-        return data.value === true ? (
-          <Switch
-            value={data.value}
-            onClick={() => onDelete(data.id)}
-            defaultChecked
-          />
-        ) : (
-          <Switch value={data.value} onClick={() => onDelete(data.id)} />
         );
       },
     },
