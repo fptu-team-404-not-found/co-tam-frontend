@@ -84,11 +84,28 @@ export default function Navbar(props) {
               <div className="navbar-modal-input-container">
                 <label
                   className="navbar-modal-label"
+                  htmlFor="navbar-modal-text"
+                >
+                  Nhập tên
+                </label>
+                <input
+                  value={props.valueName}
+                  onChange={props.onChangeName}
+                  className="navbar-modal-input"
+                  id="navbar-modal-text"
+                  type="text"
+                />
+              </div>
+              <div className="navbar-modal-input-container">
+                <label
+                  className="navbar-modal-label"
                   htmlFor="navbar-modal-email"
                 >
                   Nhập Email
                 </label>
                 <input
+                  value={props.valueEmail}
+                  onChange={props.onChangeEmail}
                   className="navbar-modal-input"
                   id="navbar-modal-email"
                   type="email"
@@ -102,14 +119,79 @@ export default function Navbar(props) {
                   Số điện thoại
                 </label>
                 <input
+                  value={props.valuePhone}
+                  onChange={props.onChangePhone}
                   className="navbar-modal-input"
                   id="navbar-modal-phone"
                   type="text"
                 />
               </div>
-              <button className="navbar-modal-create">TẠO MỚI</button>
+              <button onClick={props.addClick} className="navbar-modal-create">TẠO MỚI</button>
             </div>
           </Box>
+        </Modal>
+
+        <Modal
+          open={props.openModal1}
+          onClose={props.handleClose}
+          aria-labelledby="modal-modal-title"
+          aria-describedby="modal-modal-description"
+        >
+          <form id="navbar-modal-container">
+            <HighlightOffIcon
+              onClick={props.handleClose}
+              className="navbar-modal-close"
+            />
+            <div className="navbar-modal-border">
+              <h1 className="navbar-modal-heading">Thêm mới tài khoản</h1>
+              <div className="navbar-modal-input-container">
+                <label
+                  className="navbar-modal-label"
+                  htmlFor="navbar-modal-text"
+                >
+                  Nhập tên
+                </label>
+                <input
+                  value={props.valueName}
+                  onChange={props.onChangeName}
+                  className="navbar-modal-input"
+                  id="navbar-modal-text"
+                  type="text"
+                />
+              </div>
+              <div className="navbar-modal-input-container">
+                <label
+                  className="navbar-modal-label"
+                  htmlFor="navbar-modal-email"
+                >
+                  Nhập Email
+                </label>
+                <input
+                  value={props.valueEmail}
+                  onChange={props.onChangeEmail}
+                  className="navbar-modal-input"
+                  id="navbar-modal-email"
+                  type="email"
+                />
+              </div>
+              <div className="navbar-modal-input-container">
+                <label
+                  className="navbar-modal-label"
+                  htmlFor="navbar-modal-phone"
+                >
+                  Số điện thoại
+                </label>
+                <input
+                  value={props.valuePhone}
+                  onChange={props.onChangePhone}
+                  className="navbar-modal-input"
+                  id="navbar-modal-phone"
+                  type="text"
+                />
+              </div>
+              <button onClick={props.addClick} className="navbar-modal-create">TẠO MỚI</button>
+            </div>
+          </form>
         </Modal>
 
         <Modal
@@ -118,7 +200,7 @@ export default function Navbar(props) {
           aria-labelledby="modal-modal-title"
           aria-describedby="modal-modal-description"
         >
-          <Box id="navbar-modal-container">
+          <form id="navbar-modal-container">
             <HighlightOffIcon
               onClick={props.handleClose}
               className="navbar-modal-close"
@@ -136,6 +218,8 @@ export default function Navbar(props) {
                   className="navbar-modal-input"
                   id="navbar-modal-email"
                   type="email"
+                  value={props.valueEmail}
+                  onChange={props.onChangeEmail}
                 />
               </div>
               <div className="navbar-modal-input-container">
@@ -149,6 +233,8 @@ export default function Navbar(props) {
                   className="navbar-modal-input"
                   id="navbar-modal-phone"
                   type="text"
+                  value={props.valuePhone}
+                  onChange={props.onChangePhone}
                 />
               </div>
               <div className="navbar-modal-input-container">
@@ -169,9 +255,7 @@ export default function Navbar(props) {
                   >
                     {jobs.map((job) => (
                       <MenuItem key={job} value={job}>
-                        <Checkbox
-                          checked={jobSelected.indexOf(job) > -1}
-                        />
+                        <Checkbox checked={jobSelected.indexOf(job) > -1} />
                         <ListItemText primary={job} />
                       </MenuItem>
                     ))}
@@ -180,7 +264,7 @@ export default function Navbar(props) {
               </div>
               <button className="navbar-modal-create">TẠO MỚI</button>
             </div>
-          </Box>
+          </form>
         </Modal>
       </div>
     </>

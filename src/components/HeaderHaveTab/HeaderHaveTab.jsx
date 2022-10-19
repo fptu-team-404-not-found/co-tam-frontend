@@ -18,18 +18,21 @@ export default function HeaderHaveTab(header, tab) {
     <>
       <Tabs id="headerHaveTab-tab-container" onChange={handleChange}>
         <Tab
+          value={1}
           className="headerHaveTab-tab"
           label="Quản lý"
           component={NavLink}
           to="/accountmanager"
         />
         <Tab
+          value={2}
           className="headerHaveTab-tab"
           label="Nhân viên"
           component={NavLink}
           to="/accounthouseworker"
         />
         <Tab
+          value={3}
           className="headerHaveTab-tab"
           label="Khách hàng"
           component={NavLink}

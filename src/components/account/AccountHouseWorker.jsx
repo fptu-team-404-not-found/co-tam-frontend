@@ -7,6 +7,7 @@ import "./Account.scss";
 import { DataGrid } from "@mui/x-data-grid";
 import Switch from "@mui/material/Switch";
 import HeaderHaveTab from "../HeaderHaveTab/HeaderHaveTab";
+import swal from "sweetalert";
 
 const getAPI = "https://cotam.azurewebsites.net/api/houseworkers";
 
@@ -44,11 +45,25 @@ export default function AccountHouseWorker(props) {
       width: 200,
       renderCell: (data) => {
         const onDelete = (id) => {
-          axios.delete(getAPI + `/${id}`).then(() => {
-            getData();
+          swal({
+            title: "Are you sure?",
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+          }).then((willDelete) => {
+            if (willDelete) {
+              axios.delete(getAPI + `/${id}`).then(() => {});
+              swal("Success", {
+                icon: "success",
+              });
+            } else {
+              swal("Cancel", {
+                icon: "error",
+              });
+              setData(data);
+            }
           });
         };
-
         return data.value ? (
           <Switch
             value={data.value}

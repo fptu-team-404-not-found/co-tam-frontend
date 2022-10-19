@@ -11,6 +11,7 @@ import { Button, Modal } from "@mui/material";
 import HighlightOffIcon from "@mui/icons-material/HighlightOff";
 import AddIcon from "@mui/icons-material/Add";
 import { Box } from "@mui/system";
+import swal from "sweetalert";
 
 const getAPI = "https://cotam.azurewebsites.net/api/managers";
 
@@ -19,6 +20,9 @@ export default function AccountManager() {
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
+  const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
+  const [name, setName] = useState("");
 
   const label = { inputProps: { "aria-label": "Switch demo" } };
 
@@ -48,8 +52,23 @@ export default function AccountManager() {
       width: 200,
       renderCell: (data) => {
         const onDelete = (id) => {
-          axios.delete(getAPI + `/${id}`).then(() => {
-            getData();
+          swal({
+            title: "Are you sure?",
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+          }).then((willDelete) => {
+            if (willDelete) {
+              axios.delete(getAPI + `/${id}`).then(() => {});
+              swal("Success", {
+                icon: "success",
+              });
+            } else {
+              swal("Cancel", {
+                icon: "error",
+              });
+              setData(data);
+            }
           });
         };
 
@@ -66,13 +85,29 @@ export default function AccountManager() {
     },
   ];
 
+  const postData = () => {
+    axios
+      .post(getAPI, {
+        name,
+        email,
+        phone,
+      })
+      .then((res) => {
+        setName("");
+        setEmail("");
+        setPhone("");
+        setOpen(false);
+        swal("Good job!", res.data.message, "success");
+      });
+  };
+
   const getData = useEffect(() => {
     const fetchData = async () => {
       await axios
         .get(getAPI, {
           params: {
             pageIndex: 1,
-            pageSize: 8,
+            pageSize: 20,
           },
         })
         .then((res) => {
@@ -85,13 +120,24 @@ export default function AccountManager() {
   return (
     <>
       <div className="account-container">
-        <Navbar open={open} handleOpen={handleOpen} handleClose={handleClose} />
-        <HeaderHaveTab value="1" title="Danh sách tài khoản khách hàng" />
+        <Navbar
+          openModal1={open}
+          handleOpen={handleOpen}
+          handleClose={handleClose}
+          valueEmail={email}
+          onChangeEmail={(e) => setEmail(e.target.value)}
+          valuePhone={phone}
+          onChangePhone={(e) => setPhone(e.target.value)}
+          addClick={postData}
+          valueName={name}
+          onChangeName={(e) => setName(e.target.value)}
+        />
+        <HeaderHaveTab value="1" title="Danh sách tài khoản quản lý" />
         <div className="account-table-container">
           <DataGrid
             rows={data}
             columns={columns}
-            pageSize={8}
+            pageSize={20}
             rowsPerPageOptions={[8]}
           />
         </div>
