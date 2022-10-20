@@ -137,7 +137,7 @@ export default function Navbar(props) {
           aria-labelledby="modal-modal-title"
           aria-describedby="modal-modal-description"
         >
-          <form id="navbar-modal-container">
+          <Box id="navbar-modal-container">
             <HighlightOffIcon
               onClick={props.handleClose}
               className="navbar-modal-close"
@@ -191,7 +191,7 @@ export default function Navbar(props) {
               </div>
               <button onClick={props.addClick} className="navbar-modal-create">TẠO MỚI</button>
             </div>
-          </form>
+          </Box>
         </Modal>
 
         <Modal
@@ -200,13 +200,28 @@ export default function Navbar(props) {
           aria-labelledby="modal-modal-title"
           aria-describedby="modal-modal-description"
         >
-          <form id="navbar-modal-container">
+          <Box id="navbar-modal-container">
             <HighlightOffIcon
               onClick={props.handleClose}
               className="navbar-modal-close"
             />
             <div className="navbar-modal-border">
               <h1 className="navbar-modal-heading">Thêm mới tài khoản</h1>
+              <div className="navbar-modal-input-container">
+                <label
+                  className="navbar-modal-label"
+                  htmlFor="navbar-modal-text"
+                >
+                  Nhập tên
+                </label>
+                <input
+                  value={props.valueName}
+                  onChange={props.onChangeName}
+                  className="navbar-modal-input"
+                  id="navbar-modal-text"
+                  type="text"
+                />
+              </div>
               <div className="navbar-modal-input-container">
                 <label
                   className="navbar-modal-label"
@@ -237,10 +252,10 @@ export default function Navbar(props) {
                   onChange={props.onChangePhone}
                 />
               </div>
-              <div className="navbar-modal-input-container">
+              {/* <div className="navbar-modal-input-container">
                 <label
                   className="navbar-modal-label"
-                  htmlFor="navbar-modal-phone"
+                  htmlFor="navbar-modal-select"
                 >
                   Công việc
                 </label>
@@ -261,10 +276,10 @@ export default function Navbar(props) {
                     ))}
                   </Select>
                 </FormControl>
-              </div>
-              <button className="navbar-modal-create">TẠO MỚI</button>
+              </div> */}
+              <button onClick={props.addClick} className="navbar-modal-create">TẠO MỚI</button>
             </div>
-          </form>
+          </Box>
         </Modal>
       </div>
     </>

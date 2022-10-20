@@ -16,16 +16,19 @@ export default function AccountHouseWorker(props) {
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
+  const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
+  const [name, setName] = useState("");
 
   const label = { inputProps: { "aria-label": "Switch demo" } };
 
   const columns = [
-    { field: "name", headerName: "Họ tên", width: 400 },
-    { field: "email", headerName: "Email", width: 400 },
+    { field: "name", headerName: "Họ tên", width: 300 },
+    { field: "email", headerName: "Email", width: 300 },
     {
       field: "phone",
       headerName: "Số điện thoại",
-      width: 240,
+      width: 200,
       renderCell: (data) => {
         return data.value != null ? data.value : "-";
       },
@@ -33,9 +36,17 @@ export default function AccountHouseWorker(props) {
     {
       field: "dateOfBirth",
       headerName: "Ngày sinh nhật",
-      width: 360,
+      width: 300,
       renderCell: (data) => {
         return data.value != null ? data.value : "-";
+      },
+    },
+    {
+      field: "workerTags",
+      headerName: "Công việc",
+      width: 300,
+      renderCell: (data) => {
+        return data.value.length !== 0 ? data.value : ['-'];
       },
     },
     {
@@ -77,13 +88,29 @@ export default function AccountHouseWorker(props) {
     },
   ];
 
+  const postData = () => {
+    axios
+      .post(getAPI, {
+        name,
+        email,
+        phone,
+      })
+      .then((res) => {
+        setName("");
+        setEmail("");
+        setPhone("");
+        setOpen(false);
+        swal("Good job!", res.data.message, "success");
+      });
+  };
+
   const getData = useEffect(() => {
     const fetchData = async () => {
       await axios
         .get(getAPI, {
           params: {
             pageIndex: 1,
-            pageSize: 8,
+            pageSize: 30,
           },
         })
         .then((res) => {
@@ -96,13 +123,24 @@ export default function AccountHouseWorker(props) {
   return (
     <>
       <div className="account-container">
-        <Navbar openModal2={open} handleOpen={handleOpen} handleClose={handleClose}/>
+        <Navbar
+          openModal2={open}
+          handleOpen={handleOpen}
+          handleClose={handleClose}
+          valueEmail={email}
+          onChangeEmail={(e) => setEmail(e.target.value)}
+          valuePhone={phone}
+          onChangePhone={(e) => setPhone(e.target.value)}
+          addClick={postData}
+          valueName={name}
+          onChangeName={(e) => setName(e.target.value)}
+        />
         <HeaderHaveTab value="0" title="Danh sách tài khoản nhân viên" />
         <div className="account-table-container">
           <DataGrid
             rows={data}
             columns={columns}
-            pageSize={8}
+            pageSize={40}
             rowsPerPageOptions={[8]}
           />
         </div>
