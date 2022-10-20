@@ -9,6 +9,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import Header from "../header/Header";
 import Navbar from "../nav/Navbar";
 import "./Service.scss";
+import swal from "sweetalert";
 
 const getAPI = "https://cotam.azurewebsites.net/api/services";
 
@@ -23,7 +24,7 @@ export default function Service() {
       headerName: "Dịch vụ nâng cao",
       width: 700,
       renderCell: (data) => {
-        return data.value == [] ? '-' : data.value
+        return data.value.length !== 0 ? '-' : data.value
       },
     },
     {
@@ -48,12 +49,31 @@ export default function Service() {
       headerName: "",
       sortable: false,
       renderCell: (params) => {
-        const onClick = (e) => {};
 
+        const onDelete = (id) => {
+          swal({
+            title: "Are you sure?",
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+          }).then((willDelete) => {
+            if (willDelete) {
+              axios.delete(getAPI + `/${id}`).then(() => {});
+              swal("Success", {
+                icon: "success",
+              });
+            } else {
+              swal("Cancel", {
+                icon: "error",
+              });
+              setData(data);
+            }
+          });
+        };
         return (
           <DeleteIcon
-            style={{ color: "#FB5C5C" }}
-            onClick={onClick}
+            style={{ color: "#FB5C5C", cursor: 'pointer' }}
+            onClick={onDelete}
             defaultChecked
           />
         );
@@ -61,14 +81,21 @@ export default function Service() {
     },
   ];
 
-  useEffect(() => {
+  const getData = useEffect(() => {
     const fetchData = async () => {
-      await axios.get(getAPI).then((res) => {
-        setData(res.data.data);
-      });
+      await axios
+        .get(getAPI, {
+          params: {
+            pageIndex: 1,
+            pageSize: 20,
+          },
+        })
+        .then((res) => {
+          setData(res.data.data);
+        });
     };
     fetchData();
-  }, []);
+  }, [data]);
 
   return (
     <>
