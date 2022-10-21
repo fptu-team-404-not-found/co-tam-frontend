@@ -3,6 +3,8 @@
 .createNewArea-container {
     text-indent: 40px;
     margin-top: 48px;
+    font-size: config.$font-size-text;
+
   
     .createNewArea-btn-back {
       display: inline-flex;
@@ -32,9 +34,22 @@
     margin-left: 72px;
     margin-top: 40px;
     padding: 48px;
+
+    
+    .createNewArea-input-name {
+      width: 491px;
+      height: 58px;
+      font-size: config.$font-size-text;
+      border-radius: 4px;
+      border: 1px solid rgba(21, 191, 129, 0.5);
+      text-indent: 12px;
+    }
     .createNewArea-create-area-container {
         margin-bottom: 48px;
         font-size: config.$font-size-text;
+        fieldset {
+          border: none;
+        }
         .createNewArea-label {
             display: inline-table;
             width: 160px;

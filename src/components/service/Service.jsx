@@ -100,7 +100,7 @@ export default function Service() {
   return (
     <>
       <div className="service-container">
-        <Navbar />
+        <Navbar linkBtn="/createnewservice" />
         <Header title="Danh sách dịch vụ" />
         <div className="service-table-container">
           <DataGrid

@@ -33,9 +33,11 @@ function App() {
         <Route path='/accountcustomer' element={<AccountCustomer />}/>
         <Route path='/accounthouseworker' element={<AccountHouseWorker />}/>
         <Route path='/service' element={<Service />}/>
+        <Route path='/createnewservice' element={<CreateNewService />}/>
         <Route path='/promotion' element={<Promotion />}/>
         <Route path='/building' element={<Building />}/>
         <Route path='/area' element={<Area />}/>
+        <Route path='/createnewarea' element={<CreateNewArea />}/>
         <Route path='/configuration' element={<Configuration />}/>
       </Routes>
     </>

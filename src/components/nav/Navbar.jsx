@@ -16,6 +16,7 @@ import "./Navbar.scss";
 import AddIcon from "@mui/icons-material/Add";
 import { Box } from "@mui/material";
 import HighlightOffIcon from "@mui/icons-material/HighlightOff";
+import { NavLink } from "react-router-dom";
 
 export default function Navbar(props) {
   const [jobSelected, setJobSelected] = useState([]);
@@ -65,6 +66,8 @@ export default function Navbar(props) {
           onClick={props.handleOpen}
           startIcon={<AddIcon />}
           id="navbar-add-btn"
+          LinkComponent={NavLink}
+          to={props.linkBtn}
         >
           Thêm
         </Button>

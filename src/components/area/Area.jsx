@@ -9,6 +9,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import Header from "../header/Header";
 import Navbar from "../nav/Navbar";
 import "./Area.scss";
+import swal from "sweetalert";
 
 const getAPI = "https://cotam.azurewebsites.net/api/areas";
 
@@ -40,15 +41,32 @@ export default function Area() {
     },
     {
       field: "active",
-      headerName: "",
+      headerName: "Action",
       sortable: false,
+      width: 200,
       renderCell: (data) => {
         const onDelete = (id) => {
-          axios.delete(getAPI + `/${id}`).then(() => {
-            getData();
+          swal({
+            title: "Are you sure?",
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+          }).then((willDelete) => {
+            if (willDelete) {
+              axios.delete(getAPI + `/${id}`).then(() => {});
+              swal("Success", {
+                icon: "success",
+              });
+            } else {
+              swal("Cancel", {
+                icon: "error",
+              });
+              setData(data);
+            }
           });
         };
-        return data.value === true ? (
+
+        return data.value ? (
           <Switch
             value={data.value}
             onClick={() => onDelete(data.id)}
@@ -67,7 +85,7 @@ export default function Area() {
         .get(getAPI, {
           params: {
             pageIndex: 1,
-            pageSize: 8,
+            pageSize: 40,
           },
         })
         .then((res) => {
@@ -78,16 +96,17 @@ export default function Area() {
     fetchData();
   }, [data]);
 
+
   return (
     <>
       <div className="area-container">
-        <Navbar />
+        <Navbar linkBtn="/createnewarea"/>
         <Header title="Danh sách khu vực" />
         <div className="area-table-container">
           <DataGrid
             rows={data}
             columns={columns}
-            pageSize={8}
+            pageSize={40}
             rowsPerPageOptions={[8]}
           />
         </div>

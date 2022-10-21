@@ -58,6 +58,7 @@ export default function CreateNewService() {
         <ArrowBackIcon
           onClick={() => navigate(-1)}
           className="createNewService-btn-back"
+          style={{cursor: 'pointer'}}
         />
         <Breadcrumbs
           className="createNewService-breadcrumbs"
