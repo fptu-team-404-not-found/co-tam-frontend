@@ -28,12 +28,12 @@ export default function CreateNewBuilding() {
   const [data, setData] = useState([]);
   const [getId, setGetId] = useState([]);
   const [name, setName] = useState("");
-  const [id, setId] = useState("");
+  const [areaId, setAreaId] = useState("");
   const [district, setDistrict] = useState("");
   const [city, setCity] = useState("");
 
   const handleChangeAreaId = (event) => {
-    setId(event.target.value);
+    setAreaId(event.target.value);
   };
 
 
@@ -53,45 +53,41 @@ export default function CreateNewBuilding() {
         });
     };
     fetchData();
-  }, [data]);
+  }, []);
 
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     await axios
-  //       .get(getAreaIdAPI+ `/${id}`)
-  //       .then((res) => {
-  //         console.log(res.data.data);
-  //         setGetId(res.data.data);
-  //       });
-  //   };
-  //   fetchData();
-  // }, [getId]);
-
-  // const postData = () => {
-  //   axios
-  //     .post(getAPI, {
-  //       name,
-  //       district,
-  //       areaName,
-  //       city,
-  //     })
-  //     .then((res) => {
-  //       console.log(res)
-  //       setName("");
-  //       setDistrict("");
-  //       setAreaName("");
-  //       setCity("");
-  //       swal("Good job!", res.data.message, "success");
-  //       navigate(-1);
-  //     });
-  // };
+  useEffect(() => {
+    const fetchData = async () => {
+      await axios
+        .get(getAreaIdAPI+ `/${areaId}`)
+        .then((res) => {
+          console.log(res.data.data);
+          setGetId(res.data.data);
+        });
+    };
+    fetchData();
+  }, [getId]);
 
   const postData = () => {
-    console.log(name);
-    console.log(district);
-    console.log(id);
-    console.log(city);
+    axios
+      .post(getBuildingAPI, {
+        name,
+        areaId,
+      })
+      .then((res) => {
+        console.log(res)
+        setName("");
+        setGetId('');
+        swal("Good job!", res.data.message, "success");
+        navigate(-1);
+      });
   };
+
+  // const postData = () => {
+  //   console.log(name);
+  //   console.log(district);
+  //   console.log(id);
+  //   console.log(city);
+  // };
 
   const breadcrumbs = [
     <Link
@@ -146,8 +142,7 @@ export default function CreateNewBuilding() {
             <div className="createNewBuilding-create-building-container">
               <span className="createNewBuilding-label">Tên Khu vực</span>
               <input
-                value={name}
-                onChange={(e) => setName(e.target.value)}
+                value={getId.name}
                 type="text"
                 className="createNewBuilding-input"
                 disabled
@@ -161,7 +156,7 @@ export default function CreateNewBuilding() {
                 labelId="createNewBuilding-input-area"
                 id="createNewBuilding-select-area"
                 className="createNewBuilding-select"
-                value={id}
+                value={areaId}
                 onChange={handleChangeAreaId}
               >
                 {data.map((res) => (
@@ -172,8 +167,7 @@ export default function CreateNewBuilding() {
             <div className="createNewBuilding-create-building-container">
               <span className="createNewBuilding-label">Tỉnh/Thành phố</span>
               <input
-                value={city}
-                onChange={(e) => setName(e.target.value)}
+                value={getId.city}
                 type="text"
                 className="createNewBuilding-input"
                 disabled
