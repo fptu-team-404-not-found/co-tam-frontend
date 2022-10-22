@@ -45,11 +45,10 @@ export default function Service() {
       },
     },
     {
-      field: "delete",
+      field: "active",
       headerName: "",
       sortable: false,
-      renderCell: (params) => {
-
+      renderCell: (data) => {
         const onDelete = (id) => {
           swal({
             title: "Are you sure?",
@@ -70,12 +69,15 @@ export default function Service() {
             }
           });
         };
-        return (
-          <DeleteIcon
-            style={{ color: "#FB5C5C", cursor: 'pointer' }}
-            onClick={onDelete}
+
+        return data.value == 1 ? (
+          <Switch
+            value={data.value}
+            onClick={() => onDelete(data.id)}
             defaultChecked
           />
+        ) : (
+          <Switch value={data.value} onClick={() => onDelete(data.id)} />
         );
       },
     },

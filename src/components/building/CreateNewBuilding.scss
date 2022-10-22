@@ -44,6 +44,16 @@
             display: inline-table;
             width: 160px;
         }
+        .createNewBuilding-select {
+           width: 500px;
+            border: 1px solid rgba(21, 191, 129, 0.5);
+            font-size: config.$font-size-text;
+            border-radius: 8px;
+            height: 54px;
+            fieldset {
+              border: none;
+            }
+        }
         .createNewBuilding-input {
             width: 500px;
             border: 1px solid rgba(21, 191, 129, 0.5);

@@ -20,6 +20,11 @@ import TextField from "@mui/material/TextField";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { DesktopDatePicker } from "@mui/x-date-pickers/DesktopDatePicker";
+import axios from "axios";
+import swal from "sweetalert";
+
+
+const getAPI = "https://cotam.azurewebsites.net/api/promotions";
 
 export default function CreateNewPromotion() {
   const [serviceSelected, setServiceSelected] = useState([]);
@@ -27,8 +32,19 @@ export default function CreateNewPromotion() {
   const navigate = useNavigate();
   const [dateValue, setDateValue] = useState(dayjs());
 
-  const handleChangeDate = (newValue) => {
-    setDateValue(newValue);
+  const [code, setCode] = useState('');
+  const [description, setDescription] = useState('');
+  const [startDate, setStartDate] = useState(dayjs());
+  const [endDate, setEndDate] = useState(dayjs());
+  const [discount, setDiscount] = useState(0);
+  const [amount, setAmount] = useState(0);
+
+  const handleChangeDatestart = (newValue) => {
+    setStartDate(newValue);
+  };
+
+  const handleChangeDateEnd = (newValue) => {
+    setEndDate(newValue);
   };
 
   const ITEM_HEIGHT = 48;
@@ -79,12 +95,55 @@ export default function CreateNewPromotion() {
     setPaymentSelected(typeof value === "string" ? value.split(",") : value);
   };
 
+  const postData = () => {
+    if (endDate <= startDate) {
+      swal("Nhập sai", "Ngày kết thúc phải lớn hơn ngày bắt đầu!", "error");
+    }
+    else if (code.trim() === '' || description.trim() === '') {
+      swal("Nhập sai", "Bắt buộc nhập code!", "error");
+    }
+    else if (discount <= 0) {
+      swal("Nhập sai", "Giảm giá không được bé hơn hoặc bằng 0", "error");
+    }
+    else {
+      axios
+      .post(getAPI, {
+        code,
+        description,
+        startDate,
+        endDate,
+        discount,
+        amount,
+      })
+      .then((res) => {
+        console.log(res)
+        setCode('');
+        setDescription('');
+        setEndDate(dayjs());
+        setStartDate(dayjs());
+        setDiscount(0);
+        setAmount(0);
+        swal("Good job!", res.data.message, "success");
+        navigate(-1);
+      });
+    }
+  };
+  // const postData = () => {
+  //   console.log(code);
+  //   console.log(description);
+  //   console.log(startDate);
+  //   console.log(endDate);
+  //   console.log(discount);
+  //   console.log(amount);
+  // };
+
   return (
     <>
       <Menu />
       <div className="createNewPromotion-container">
         <ArrowBackIcon
           onClick={() => navigate(-1)}
+          style={{ cursor: 'pointer' }}
           className="createNewPromotion-btn-back"
         />
         <Breadcrumbs
@@ -101,13 +160,13 @@ export default function CreateNewPromotion() {
           <div className="createNewPromotion-create-promotion-container-left">
             <div className="createNewPromotion-create-promotion-container">
               <span className="createNewPromotion-label">Mã *</span>
-              <input type="text" className="createNewPromotion-input" />
+              <input value={code} onChange={e => setCode(e.target.value)} type="text" className="createNewPromotion-input" />
             </div>
           </div>
           <div className="createNewPromotion-create-promotion-container-left">
             <div className="createNewPromotion-create-promotion-container">
-              <span className="createNewPromotion-label">Tên *</span>
-              <input type="text" className="createNewPromotion-input" />
+              <span className="createNewPromotion-label">Mô tả *</span>
+              <input value={description} onChange={e => setDescription(e.target.value)} type="text" className="createNewPromotion-input" />
             </div>
           </div>
         </div>
@@ -118,8 +177,8 @@ export default function CreateNewPromotion() {
               <LocalizationProvider dateAdapter={AdapterDayjs}>
                 <DesktopDatePicker
                   inputFormat="MM/DD/YYYY"
-                  value={dateValue}
-                  onChange={handleChangeDate}
+                  value={startDate}
+                  onChange={handleChangeDatestart}
                   renderInput={(params) => <TextField {...params} />}
                 />
               </LocalizationProvider>
@@ -131,35 +190,11 @@ export default function CreateNewPromotion() {
               <LocalizationProvider dateAdapter={AdapterDayjs}>
                 <DesktopDatePicker
                   inputFormat="MM/DD/YYYY"
-                  value={dateValue}
-                  onChange={handleChangeDate}
+                  value={endDate}
+                  onChange={handleChangeDateEnd}
                   renderInput={(params) => <TextField {...params} />}
                 />
               </LocalizationProvider>
-            </div>
-          </div>
-          <div className="createNewPromotion-create-promotion-container-right">
-            <div className="createNewPromotion-create-promotion-container">
-              <span className="createNewPromotion-label">Dịch vụ *</span>
-              <FormControl sx={{ width: 300 }}>
-                <Select
-                  className="createNewPromotion-select"
-                  multiple
-                  value={serviceSelected}
-                  onChange={handleChange}
-                  renderValue={(selected) => selected.join(", ")}
-                  MenuProps={MenuProps}
-                >
-                  {services.map((service) => (
-                    <MenuItem key={service} value={service}>
-                      <Checkbox
-                        checked={serviceSelected.indexOf(service) > -1}
-                      />
-                      <ListItemText primary={service} />
-                    </MenuItem>
-                  ))}
-                </Select>
-              </FormControl>
             </div>
           </div>
         </div>
@@ -167,45 +202,19 @@ export default function CreateNewPromotion() {
           <div className="createNewPromotion-create-promotion-container-left">
             <div className="createNewPromotion-create-promotion-container">
               <span className="createNewPromotion-label">Giảm giá *</span>
-              <input type="number" className="createNewPromotion-input" />
+              <input value={discount} onChange={e => setDiscount(e.target.value)} type="number" className="createNewPromotion-input" />
             </div>
           </div>
           <div className="createNewPromotion-create-promotion-container-left">
             <div className="createNewPromotion-create-promotion-container">
               <span className="createNewPromotion-label">Hóa đơn *</span>
-              <input type="number" className="createNewPromotion-input" />
-            </div>
-          </div>
-          <div className="createNewPromotion-create-promotion-container-right">
-            <div className="createNewPromotion-create-promotion-container">
-              <span className="createNewPromotion-label">
-                Phương thức thanh toán *
-              </span>
-              <FormControl sx={{ width: 300 }}>
-                <Select
-                  className="createNewPromotion-select"
-                  multiple
-                  value={paymentSelected}
-                  onChange={handleChangePayment}
-                  renderValue={(selected) => selected.join(", ")}
-                  MenuProps={MenuProps}
-                >
-                  {payments.map((payment) => (
-                    <MenuItem key={payment} value={payment}>
-                      <Checkbox
-                        checked={paymentSelected.indexOf(payment) > -1}
-                      />
-                      <ListItemText primary={payment} />
-                    </MenuItem>
-                  ))}
-                </Select>
-              </FormControl>
+              <input value={amount} onChange={e => setAmount(e.target.value)} type="number" className="createNewPromotion-input" />
             </div>
           </div>
         </div>
         <div className="createNewPromotion-btn-container">
-          <button className="createNewPromotion-btn">Tạo</button>
-          <button className="createNewPromotion-btn">Hủy</button>
+          <button onClick={postData} className="createNewPromotion-btn">Tạo</button>
+          <button onClick={() => navigate(-1)} className="createNewPromotion-btn">Hủy</button>
         </div>
       </FormControl>
     </>

@@ -41,9 +41,9 @@ export default function Area() {
     },
     {
       field: "active",
-      headerName: "Action",
+      headerName: "",
       sortable: false,
-      width: 200,
+      width: 60,
       renderCell: (data) => {
         const onDelete = (id) => {
           swal({

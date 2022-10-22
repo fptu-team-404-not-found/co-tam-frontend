@@ -9,6 +9,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import Header from "../header/Header";
 import Navbar from "../nav/Navbar";
 import "./Building.scss";
+import swal from "sweetalert";
 
 const getAPI = "https://cotam.azurewebsites.net/api/buildings";
 
@@ -18,11 +19,30 @@ export default function Building() {
   const label = { inputProps: { "aria-label": "Switch demo" } };
 
   const columns = [
-    { field: "name", headerName: "Tên tòa nhà", width: 660 },
+    { field: "name", headerName: "Tên tòa nhà", width: 360 },
     {
-      field: "houses",
-      headerName: "Số phòng",
-      width: 660,
+      field: "nameBuilding",
+      headerName: "Khu vực",
+      width: 360,
+      renderCell: (data) => {
+        return data.row.area.name;
+      },
+    },
+    {
+      field: "district",
+      headerName: "Quận",
+      width: 360,
+      renderCell: (data) => {
+        return data.row.area.district;
+      },
+    },
+    {
+      field: "city",
+      headerName: "Thành phố",
+      width: 360,
+      renderCell: (data) => {
+        return data.row.area.city;
+      },
     },
     {
       field: "edit",
@@ -30,30 +50,49 @@ export default function Building() {
       sortable: false,
       width: 80,
       renderCell: (params) => {
-        const onClick = (e) => {};
 
         return (
           <EditIcon
             style={{ color: "#15BF81" }}
-            onClick={onClick}
             defaultChecked
           />
         );
       },
     },
     {
-      field: "delete",
+      field: "active",
       headerName: "",
       sortable: false,
-      renderCell: (params) => {
-        const onClick = (e) => {};
+      renderCell: (data) => {
+        const onDelete = (id) => {
+          swal({
+            title: "Are you sure?",
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+          }).then((willDelete) => {
+            if (willDelete) {
+              axios.delete(getAPI + `/${id}`).then(() => {});
+              swal("Success", {
+                icon: "success",
+              });
+            } else {
+              swal("Cancel", {
+                icon: "error",
+              });
+              setData(data);
+            }
+          });
+        };
 
-        return (
-          <DeleteIcon
-            style={{ color: "#FB5C5C" }}
-            onClick={onClick}
+        return data.value ? (
+          <Switch
+            value={data.value}
+            onClick={() => onDelete(data.id)}
             defaultChecked
           />
+        ) : (
+          <Switch value={data.value} onClick={() => onDelete(data.id)} />
         );
       },
     },
@@ -69,6 +108,7 @@ export default function Building() {
           },
         })
         .then((res) => {
+          // console.log(res.data.data[0].area.city);
           setData(res.data.data);
         });
     };
@@ -78,7 +118,7 @@ export default function Building() {
   return (
     <>
       <div className="building-container">
-        <Navbar />
+        <Navbar linkBtn='/createnewbuilding'/>
         <Header title="Danh sách tòa nhà" />
         <div className="building-table-container">
           <DataGrid

@@ -6,6 +6,9 @@
             background-color: rgba(21, 191, 129, 0.1);
         }
     }
+    .css-5ryogn-MuiButtonBase-root-MuiSwitch-switchBase.Mui-checked {
+        color: config.$primary-color;
+    }
     .service-table-container {
         height: 580px;
         width: 100%;

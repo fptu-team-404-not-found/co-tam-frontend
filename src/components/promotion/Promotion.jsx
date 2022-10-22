@@ -9,9 +9,10 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import Header from "../header/Header";
 import Navbar from "../nav/Navbar";
 import "./Promotion.scss";
+import swal from "sweetalert";
 
 
-const getAPI = "https://633cfec07e19b17829057a5a.mockapi.io/account/promotion";
+const getAPI = "https://cotam.azurewebsites.net/api/promotions";
 
 export default function Promotion() {
   const [data, setData] = useState([]);
@@ -19,17 +20,17 @@ export default function Promotion() {
   const label = { inputProps: { "aria-label": "Switch demo" } };
 
   const columns = [
-    { field: "code", headerName: "Dịch vụ", width: 240 },
-    { field: "name", headerName: "Giá", width: 240 },
-    { field: "dateApprove", headerName: "Ngày hiệu lực", width: 240 },
-    { field: "serviceApprove", headerName: "Dịch vụ áp dụng", width: 240 },
-    { field: "discount", headerName: "Giảm giá", width: 240 },
-    { field: "receipt", headerName: "Hóa đơn áp dụng", width: 240 },
+    { field: "code", headerName: "Mã", width: 200 },
+    { field: "description", headerName: "Mô tả", width: 300 },
+    { field: "startDate", headerName: "Ngày hiệu lực", width: 280 },
+    { field: "endDate", headerName: "Ngày kết thúc", width: 280 },
+    { field: "discount", headerName: "Giảm giá", width: 200 },
+    { field: "amount", headerName: "Hóa đơn áp dụng", width: 240 },
     {
       field: "edit",
       headerName: "",
       sortable: false,
-      width: 80,
+      width: 60,
       renderCell: (params) => {
         const onClick = (e) => {
         };
@@ -40,25 +41,57 @@ export default function Promotion() {
       }
     },
     {
-        field: "delete",
-        headerName: "",
-        sortable: false,
-        renderCell: (params) => {
-          const onClick = (e) => {
-          };
-    
-          return (
-            <DeleteIcon style={{ color: '#FB5C5C' }} onClick={onClick} defaultChecked/>
-          );
-        }
+      field: "active",
+      headerName: "",
+      sortable: false,
+      width: 60,
+      renderCell: (data) => {
+        const onDelete = (id) => {
+          swal({
+            title: "Are you sure?",
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+          }).then((willDelete) => {
+            if (willDelete) {
+              axios.delete(getAPI + `/${id}`).then(() => {});
+              swal("Success", {
+                icon: "success",
+              });
+            } else {
+              swal("Cancel", {
+                icon: "error",
+              });
+              setData(data);
+            }
+          });
+        };
+
+        return data.value ? (
+          <Switch
+            value={data.value}
+            onClick={() => onDelete(data.id)}
+            defaultChecked
+          />
+        ) : (
+          <Switch value={data.value} onClick={() => onDelete(data.id)} />
+        );
       },
+    },
   ];
 
   useEffect(() => {
     const fetchData = async () => {
-      await axios.get(getAPI).then((res) => {
-        setData(res.data);
-      });
+      await axios
+        .get(getAPI, {
+          params: {
+            pageIndex: 1,
+            pageSize: 30,
+          },
+        })
+        .then((res) => {
+          setData(res.data.data);
+        });
     };
     fetchData();
   }, [data]);
@@ -67,7 +100,7 @@ export default function Promotion() {
   return (
     <>
       <div className="promotion-container">
-        <Navbar />
+        <Navbar linkBtn="/createnewpromotion"/>
         <Header title="Danh sách khuyến mãi" />
         <div className="promotion-table-container">
           <DataGrid
