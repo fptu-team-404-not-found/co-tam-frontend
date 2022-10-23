@@ -1,70 +1,134 @@
-# Getting Started with Create React App
+# CÔ TẤM - SWD392 
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+:wave: Welcome to our Software Architecture and Design Project (SWD392) :wave:
 
-## Available Scripts
+## Table of Contents
+- [Description](#description)
+- [Preview Screenshot](#preview-screenshot)
+- [Technology](#technology)
+- [Functional requirements](#functional-requirements)
+- [Useful Resources](#useful-resources)
+- [Contributors](#contributors)
+- [References](#references)
+- [License & Copyright](#license--copyright)
 
-In the project directory, you can run:
+## Description
+- Cô Tấm is a platform that provides hourly domestic help services through a technology application
+- This project contains a website for admin and manager, an android mobile application for customer, an android mobile application for houseworker
+- This project started from 05-09-2022 until now
 
-### `npm start`
+## Preview Screenshot
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+**1. Website for admin and manager**
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+**2. Android mobile application for customer**
+<div align="center">
+  <img src="./document/imgs/customer_mobile_login.png" alt="Customer Mobile Login" width="25%"></img> &nbsp;&nbsp; <img src="./document/imgs/customer_mobile_home.png" alt="Customer Mobile Home" width="25%"></img> &nbsp;&nbsp; <img src="./document/imgs/customer_mobile_order_history.png" alt="Customer Mobile Order History" width="25%"></img> &nbsp;&nbsp; <img src="./document/imgs/customer_mobile_order_rating.png" alt="Customer Mobile Order Rating" width="25%"></img>
+</div>
 
-### `npm test`
+**3. Android mobile application for houseworker**
+<div align="center">
+  <img src="./document/imgs/houseworker_mobile_login.png" alt="Houseworker Mobile Login" width="25%"></img> &nbsp;&nbsp; <img src="./document/imgs/houseworker_mobile_home.png" alt="Houseworker Mobile Home" width="25%"></img> &nbsp;&nbsp; <img src="./document/imgs/houseworker_mobile_order_receiving.png" alt="Houseworker Mobile Order Receiving" width="25%"></img> 
+</div>
+  
+## Technology
+**1. Frontend**
+  - HTML, CSS, JavaScript
+  - React
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+**2. Backend**
+  - C# Language
+  - .NET Core - Entity Framework
+  
+**3. Mobile**
+  - Flutter
 
-### `npm run build`
+**3. Database**
+  - Microsoft SQL Server - a relational model database server produced by Microsoft
+  - Azure Cloud Service
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+**4. Other Technologies**
+- RESTful API
+- Google Oauth2 for Authentication Login with Google
+- Firebase for push notification
+- Azure App Service for Continous Deployment
+- JSON Web Tokens for authentication
+- Material Design for design UI
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+**5. Tool**
+  - Visual Studio 2022
+  - Visual Studio Code 
+  - Android Studio
+  - Figma
+  - Swagger API Documentation
+  - Postman
+  - Draw.io for ERD Diagram
+  - Microsoft SQL Server Management Studio 18
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## Functional requirements
+:point_right: [Check out here for more details](https://github.com/fptu-team-404-not-found/co_tam_houseworker_mobile/tree/main/document/document)
 
-### `npm run eject`
+**1. Customer:**
+- [ ] View personal information
+- [ ] Make an order for cleaning service
+- [ ] Track current cleaning schedule progress.
+- [ ] View the history of used services.
+- [ ] Create a list of Houseworker favorites - blocked.
+- [ ] ...
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+**2. Houseworker:**
+- [ ] Management of personal information.
+- [ ] Receive - cancel the schedule.
+- [ ] View their work schedule.
+- [ ] Track current cleaning schedule progress.
+- [ ] View the history of completed/canceled schedules.
+- [ ] ...
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+**3. Manager:**
+- [ ] Manage the status of employees.
+- [ ] Manage Customers.
+- [ ] ...
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+**4. Admin:**
+- [ ] Provide the right to add - remove events - promotions.
+- [ ] Change the listed price of the service.
+- [ ] Temporarily lock - unlock features - services.
+- [ ] Update information about Application - terms - introduction.
+- [ ] ...
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+## Useful Resources
 
-## Learn More
+#| #| Name | Description
+-| -| ---- | -----------
+1| -| Main Project Folder | Main source code
+-| 1.1| [Front-end](https://github.com/fptu-team-404-not-found/co-tam-frontend) | Front-end source code
+-| 1.2| [Customer Android Mobile App](https://github.com/fptu-team-404-not-found/co_tam_customer_mobile) | Android Mobile for Customer source code
+-| 1.3| [Houseworker Android Mobile App](https://github.com/fptu-team-404-not-found/co_tam_houseworker_mobile) | Android Mobile for Houseworker source code
+-| 1.4| [Back-end](https://github.com/fptu-team-404-not-found/co-tam-backend) | Back-end source code
+2| -| Database | Database Information
+-| 2.1| [Database Script](https://github.com/fptu-team-404-not-found/co_tam_houseworker_mobile/blob/main/document/database/CoTamDB.sql) | SQL Scipt
+-| 2.2| [Database Entity Relationship Diagram](https://raw.githubusercontent.com/fptu-team-404-not-found/co_tam_houseworker_mobile/main/document/imgs/ERD-PhysicalERD.png) | Database ERD
+3| -| UI Design | UI design on Figma
+-| 3.1| [Style guide](https://www.figma.com/file/tjpHV6LA8K1vjBITENDw8c/C%C3%B4-T%E1%BA%A5m?node-id=63%3A1057) | Style guide
+-| 3.2| [Customer App](https://www.figma.com/file/tjpHV6LA8K1vjBITENDw8c/C%C3%B4-T%E1%BA%A5m) | Customer Android Mobile Application
+-| 3.3| [Houseworker App](https://www.figma.com/file/tjpHV6LA8K1vjBITENDw8c/C%C3%B4-T%E1%BA%A5m?node-id=159%3A3099) | Houseworker Android Mobile Application
+-| 3.4| [Admin Website](https://www.figma.com/file/tjpHV6LA8K1vjBITENDw8c/C%C3%B4-T%E1%BA%A5m?node-id=125%3A1026) | Admin Website
+-| 3.5| [Manager Website](https://www.figma.com/file/tjpHV6LA8K1vjBITENDw8c/C%C3%B4-T%E1%BA%A5m?node-id=158%3A1380) | Manager Website
+4| -| [Swagger API Document](https://cotam.azurewebsites.net/swagger/index.html) | Swagger API Document
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+## Contributors
+**1. Mentors:**
+- Lecturer - Mentor: Lam Huu Khanh Phuong
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+**2. Members:**
+- [Nguyen Dao Duc Quan](https://github.com/dq-qiji) - SE151008 - **Leader | Business Analyst | Android Mobile Developer | Back-end Developer**
+- [Huynh Le Thuy Tien](https://github.com/tienhuynh-tn) - SE151104 - **Android Mobile Developer | Back-end Developer | Database Designer**
+- [Nguyen Lam Thuy Phuong](https://github.com/nguyenlamthuyphuong25) - 	SE150999 - **UI Designer | Front-end Developer**
+- [Tran Thanh Dat](https://github.com/DatTranLK) - SE151444 - **Database Designer | Back-end Developer**
+- [Tran Ngoc Thang](https://github.com/thangtn2101) - SE151478 - **Database Designer | Android Mobile Developer**
 
-### Code Splitting
+## References
+- [Flutter documentation](https://docs.flutter.dev/)
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+## License & Copyright
+&copy; 2022 fptu-team-404-not-found Licensed under the [GPL-3.0 LICENSE](https://github.com/fptu-team-404-not-found/co_tam_houseworker_mobile/blob/main/LICENSE).
