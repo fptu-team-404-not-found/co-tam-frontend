@@ -22,6 +22,16 @@ import AddIcon from "@mui/icons-material/Add";
 export default function CreateNewService() {
   const [time, setTime] = useState("1");
   const [person, setPerson] = useState("4");
+  // const [name, setName] = useState('');
+  // const [service, setService] = useState('');
+  // const [name, setName] = useState('');
+  // const [name, setName] = useState('');
+  // const [extraServiceName, setExtraServiceName] = useState('');
+  // const [extraServicePrice, setExtraServicePrice] = useState(0);
+  // const [extraServiceDescription, setExtraServiceDescription] = useState('0');
+
+
+
   const navigate = useNavigate();
 
   const handleChangeTime = (event) => {

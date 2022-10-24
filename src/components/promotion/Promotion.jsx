@@ -10,12 +10,14 @@ import Header from "../header/Header";
 import Navbar from "../nav/Navbar";
 import "./Promotion.scss";
 import swal from "sweetalert";
+import { useNavigate } from "react-router";
 
 
 const getAPI = "https://cotam.azurewebsites.net/api/promotions";
 
-export default function Promotion() {
+export default function Promotion(props) {
   const [data, setData] = useState([]);
+  const navigate = useNavigate();
 
   const label = { inputProps: { "aria-label": "Switch demo" } };
 
@@ -31,12 +33,13 @@ export default function Promotion() {
       headerName: "",
       sortable: false,
       width: 60,
-      renderCell: (params) => {
-        const onClick = (e) => {
+      renderCell: (data) => {
+        const onClick = () => {
+          axios.get(getAPI + `/${data.id}`).then((res) => navigate('/createnewpromotion', {state: { id: data.id }}));
         };
   
         return (
-          <EditIcon style={{ color: '#15BF81' }} onClick={onClick} defaultChecked/>
+          <EditIcon style={{ color: '#15BF81', cursor: 'pointer' }} onClick={onClick} defaultChecked/>
         );
       }
     },

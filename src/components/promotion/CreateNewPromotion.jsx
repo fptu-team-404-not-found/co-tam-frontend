@@ -6,8 +6,8 @@ import {
   MenuItem,
   Select,
 } from "@mui/material";
-import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import Header from "../header/Header";
 import Menu from "../menu/Menu";
 import NavigateNextIcon from "@mui/icons-material/NavigateNext";
@@ -23,21 +23,22 @@ import { DesktopDatePicker } from "@mui/x-date-pickers/DesktopDatePicker";
 import axios from "axios";
 import swal from "sweetalert";
 
-
 const getAPI = "https://cotam.azurewebsites.net/api/promotions";
 
-export default function CreateNewPromotion() {
-  const [serviceSelected, setServiceSelected] = useState([]);
-  const [paymentSelected, setPaymentSelected] = useState([]);
+export default function CreateNewPromotion(props) {
   const navigate = useNavigate();
-  const [dateValue, setDateValue] = useState(dayjs());
+  const [data, setData] = useState([]);
 
-  const [code, setCode] = useState('');
-  const [description, setDescription] = useState('');
+  const [code, setCode] = useState("");
+  const [description, setDescription] = useState("");
   const [startDate, setStartDate] = useState(dayjs());
   const [endDate, setEndDate] = useState(dayjs());
   const [discount, setDiscount] = useState(0);
   const [amount, setAmount] = useState(0);
+
+  const { state } = useLocation();
+
+  console.log(state);
 
   const handleChangeDatestart = (newValue) => {
     setStartDate(newValue);
@@ -46,6 +47,24 @@ export default function CreateNewPromotion() {
   const handleChangeDateEnd = (newValue) => {
     setEndDate(newValue);
   };
+
+  useEffect(() => {
+    if (state !== null) {
+      const fetchData = () => {
+        axios.get(getAPI + `/${state.id}`).then((res) => {
+          console.log(res.data.data);
+          setData(res.data.data);
+          setCode(res.data.data.code);
+          setDescription(res.data.data.description);
+          setStartDate(res.data.data.startDate);
+          setEndDate(res.data.data.endDate);
+          setDiscount(res.data.data.discount);
+          setAmount(res.data.data.amount);
+        });
+      };
+      fetchData();
+    }
+  }, []);
 
   const ITEM_HEIGHT = 48;
   const ITEM_PADDING_TOP = 8;
@@ -57,10 +76,6 @@ export default function CreateNewPromotion() {
       },
     },
   };
-
-  const payments = ["Tiền mặt", "Ví"];
-
-  const services = ["Dọn dẹp", "Khử trùng", "Sofa - Rèm cửa", "Thiết bị lạnh"];
 
   const breadcrumbs = [
     <Link
@@ -81,61 +96,64 @@ export default function CreateNewPromotion() {
     console.info("You clicked a breadcrumb.");
   }
 
-  const handleChange = (event) => {
-    const {
-      target: { value },
-    } = event;
-    setServiceSelected(typeof value === "string" ? value.split(",") : value);
-  };
-
-  const handleChangePayment = (event) => {
-    const {
-      target: { value },
-    } = event;
-    setPaymentSelected(typeof value === "string" ? value.split(",") : value);
+  const putData = () => {
+    if (endDate <= startDate) {
+      swal("Nhập sai", "Ngày kết thúc phải lớn hơn ngày bắt đầu!", "error");
+    } else if (code.trim() === "" || description.trim() === "") {
+      swal("Nhập sai", "Bắt buộc nhập code!", "error");
+    } else if (discount <= 0) {
+      swal("Nhập sai", "Giảm giá không được bé hơn hoặc bằng 0", "error");
+    } else {
+      axios
+        .put(getAPI  + `/${state.id}`, {
+          code,
+          description,
+          startDate,
+          endDate,
+          discount,
+          amount,
+          active: false,
+        })
+        .then((res) => {
+          console.log(res);
+          swal("Good job!", res.data.message, "success");
+          navigate(-1);
+        });
+      }
   };
 
   const postData = () => {
     if (endDate <= startDate) {
       swal("Nhập sai", "Ngày kết thúc phải lớn hơn ngày bắt đầu!", "error");
-    }
-    else if (code.trim() === '' || description.trim() === '') {
+    } else if (code.trim() === "" || description.trim() === "") {
       swal("Nhập sai", "Bắt buộc nhập code!", "error");
-    }
-    else if (discount <= 0) {
+    } else if (discount <= 0) {
       swal("Nhập sai", "Giảm giá không được bé hơn hoặc bằng 0", "error");
-    }
-    else {
+    } else {
       axios
-      .post(getAPI, {
-        code,
-        description,
-        startDate,
-        endDate,
-        discount,
-        amount,
-      })
-      .then((res) => {
-        console.log(res)
-        setCode('');
-        setDescription('');
-        setEndDate(dayjs());
-        setStartDate(dayjs());
-        setDiscount(0);
-        setAmount(0);
-        swal("Good job!", res.data.message, "success");
-        navigate(-1);
-      });
+        .post(getAPI, {
+          code,
+          description,
+          startDate,
+          endDate,
+          discount,
+          amount,
+        })
+        .then((res) => {
+          console.log(res);
+          setCode("");
+          setDescription("");
+          setEndDate(dayjs());
+          setStartDate(dayjs());
+          setDiscount(0);
+          setAmount(0);
+          swal("Good job!", res.data.message, "success");
+          navigate(-1);
+        });
     }
   };
-  // const postData = () => {
-  //   console.log(code);
-  //   console.log(description);
-  //   console.log(startDate);
-  //   console.log(endDate);
-  //   console.log(discount);
-  //   console.log(amount);
-  // };
+
+  
 
   return (
     <>
@@ -143,7 +161,7 @@ export default function CreateNewPromotion() {
       <div className="createNewPromotion-container">
         <ArrowBackIcon
           onClick={() => navigate(-1)}
-          style={{ cursor: 'pointer' }}
+          style={{ cursor: "pointer" }}
           className="createNewPromotion-btn-back"
         />
         <Breadcrumbs
@@ -154,19 +172,29 @@ export default function CreateNewPromotion() {
           {breadcrumbs}
         </Breadcrumbs>
       </div>
-      <Header title="Thêm khuyến mãi mới" />
+      {data.length === 0 ? <Header title="Thêm khuyến mãi mới" /> : <Header title="Chỉnh sửa khuyến mãi" /> }
       <FormControl id="createNewPromotion-form-container">
         <div className="createNewPromotion-create-promotion-container-side">
           <div className="createNewPromotion-create-promotion-container-left">
             <div className="createNewPromotion-create-promotion-container">
               <span className="createNewPromotion-label">Mã *</span>
-              <input value={code} onChange={e => setCode(e.target.value)} type="text" className="createNewPromotion-input" />
+              <input
+                value={code}
+                onChange={(e) => setCode(e.target.value)}
+                type="text"
+                className="createNewPromotion-input"
+              />
             </div>
           </div>
           <div className="createNewPromotion-create-promotion-container-left">
             <div className="createNewPromotion-create-promotion-container">
               <span className="createNewPromotion-label">Mô tả *</span>
-              <input value={description} onChange={e => setDescription(e.target.value)} type="text" className="createNewPromotion-input" />
+              <input
+                value={description}
+                onChange={(e) => setDescription(e.target.value)}
+                type="text"
+                className="createNewPromotion-input"
+              />
             </div>
           </div>
         </div>
@@ -202,19 +230,42 @@ export default function CreateNewPromotion() {
           <div className="createNewPromotion-create-promotion-container-left">
             <div className="createNewPromotion-create-promotion-container">
               <span className="createNewPromotion-label">Giảm giá *</span>
-              <input value={discount} onChange={e => setDiscount(e.target.value)} type="number" className="createNewPromotion-input" />
+              <input
+                value={discount}
+                onChange={(e) => setDiscount(e.target.value)}
+                type="number"
+                className="createNewPromotion-input"
+              />
             </div>
           </div>
           <div className="createNewPromotion-create-promotion-container-left">
             <div className="createNewPromotion-create-promotion-container">
               <span className="createNewPromotion-label">Hóa đơn *</span>
-              <input value={amount} onChange={e => setAmount(e.target.value)} type="number" className="createNewPromotion-input" />
+              <input
+                value={amount}
+                onChange={(e) => setAmount(e.target.value)}
+                type="number"
+                className="createNewPromotion-input"
+              />
             </div>
           </div>
         </div>
         <div className="createNewPromotion-btn-container">
-          <button onClick={postData} className="createNewPromotion-btn">Tạo</button>
-          <button onClick={() => navigate(-1)} className="createNewPromotion-btn">Hủy</button>
+          {data.length === 0 ? (
+            <button onClick={postData} className="createNewPromotion-btn">
+              Tạo
+            </button>
+          ) : (
+            <button onClick={putData} className="createNewPromotion-btn">
+              Cập nhật
+            </button>
+          )}
+          <button
+            onClick={() => navigate(-1)}
+            className="createNewPromotion-btn"
+          >
+            Hủy
+          </button>
         </div>
       </FormControl>
     </>

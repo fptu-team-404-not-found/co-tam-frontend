@@ -10,6 +10,7 @@ import Header from "../header/Header";
 import Navbar from "../nav/Navbar";
 import "./Building.scss";
 import swal from "sweetalert";
+import { CircularProgress } from "@mui/material";
 
 const getAPI = "https://cotam.azurewebsites.net/api/buildings";
 
@@ -121,12 +122,12 @@ export default function Building() {
         <Navbar linkBtn='/createnewbuilding'/>
         <Header title="Danh sách tòa nhà" />
         <div className="building-table-container">
-          <DataGrid
+          {data.length === 0 ? <CircularProgress /> : <DataGrid
             rows={data}
             columns={columns}
             pageSize={8}
             rowsPerPageOptions={[8]}
-          />
+          />}
         </div>
       </div>
     </>
