@@ -10,11 +10,13 @@ import Header from "../header/Header";
 import Navbar from "../nav/Navbar";
 import "./Area.scss";
 import swal from "sweetalert";
+import { useNavigate } from "react-router";
 
 const getAPI = "https://cotam.azurewebsites.net/api/areas";
 
 export default function Area() {
   const [data, setData] = useState([]);
+  const navigate = useNavigate();
 
   const label = { inputProps: { "aria-label": "Switch demo" } };
 
@@ -26,18 +28,16 @@ export default function Area() {
       field: "edit",
       headerName: "",
       sortable: false,
-      width: 80,
-      renderCell: (params) => {
-        const onClick = (e) => {};
-
+      width: 60,
+      renderCell: (data) => {
+        const onClick = () => {
+          axios.get(getAPI + `/${data.id}`).then((res) => navigate('/createnewarea', {state: { id: data.id }}));
+        };
+  
         return (
-          <EditIcon
-            style={{ color: "#15BF81" }}
-            onClick={onClick}
-            defaultChecked
-          />
+          <EditIcon style={{ color: '#15BF81', cursor: 'pointer' }} onClick={onClick} defaultChecked/>
         );
-      },
+      }
     },
     {
       field: "active",

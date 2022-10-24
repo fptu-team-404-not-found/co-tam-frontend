@@ -100,6 +100,7 @@ export default function Promotion(props) {
   }, [data]);
 
 
+  
   return (
     <>
       <div className="promotion-container">

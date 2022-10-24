@@ -22,26 +22,9 @@ export default function Service() {
     {
       field: "extraServices",
       headerName: "Dịch vụ nâng cao",
-      width: 700,
+      width: 800,
       renderCell: (data) => {
-        return data.value.length !== 0 ? '-' : data.value
-      },
-    },
-    {
-      field: "edit",
-      headerName: "",
-      sortable: false,
-      width: 80,
-      renderCell: (params) => {
-        const onClick = (e) => {};
-
-        return (
-          <EditIcon
-            style={{ color: "#15BF81" }}
-            onClick={onClick}
-            defaultChecked
-          />
-        );
+        return data.value.length == 0 ? '-' : data.value
       },
     },
     {
@@ -102,7 +85,7 @@ export default function Service() {
   return (
     <>
       <div className="service-container">
-        <Navbar linkBtn="/createnewservice" />
+        <Navbar styled={{ display: 'none' }} disabled='disabled' linkBtn="/createnewservice" />
         <Header title="Danh sách dịch vụ" />
         <div className="service-table-container">
           <DataGrid

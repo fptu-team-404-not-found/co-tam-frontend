@@ -11,11 +11,13 @@ import Navbar from "../nav/Navbar";
 import "./Building.scss";
 import swal from "sweetalert";
 import { CircularProgress } from "@mui/material";
+import { useNavigate } from "react-router";
 
 const getAPI = "https://cotam.azurewebsites.net/api/buildings";
 
 export default function Building() {
   const [data, setData] = useState([]);
+  const navigate = useNavigate();
 
   const label = { inputProps: { "aria-label": "Switch demo" } };
 
@@ -50,15 +52,15 @@ export default function Building() {
       headerName: "",
       sortable: false,
       width: 80,
-      renderCell: (params) => {
-
+      renderCell: (data) => {
+        const onClick = () => {
+          axios.get(getAPI + `/${data.id}`).then((res) => navigate('/createnewbuilding', {state: { id: data.id }}));
+        };
+  
         return (
-          <EditIcon
-            style={{ color: "#15BF81" }}
-            defaultChecked
-          />
+          <EditIcon style={{ color: '#15BF81', cursor: 'pointer' }} onClick={onClick} defaultChecked/>
         );
-      },
+      }
     },
     {
       field: "active",

@@ -7,9 +7,8 @@ import {
   MenuItem,
   Select,
 } from "@mui/material";
-import { Stack } from "@mui/system";
 import React, { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import Header from "../header/Header";
 import Menu from "../menu/Menu";
 import NavigateNextIcon from "@mui/icons-material/NavigateNext";
@@ -26,18 +25,32 @@ const getBuildingAPI = "https://cotam.azurewebsites.net/api/buildings";
 
 export default function CreateNewBuilding() {
   const [data, setData] = useState([]);
+  const [dataUpdate, setDataUpdate] = useState([]);
   const [getId, setGetId] = useState([]);
   const [name, setName] = useState("");
   const [areaId, setAreaId] = useState("");
-  const [district, setDistrict] = useState("");
-  const [city, setCity] = useState("");
 
   const handleChangeAreaId = (event) => {
     setAreaId(event.target.value);
   };
 
+  const { state } = useLocation();
 
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (state !== null) {
+      const fetchData = async () => {
+        await axios.get(getBuildingAPI + `/${state.id}`).then((res) => {
+          console.log(res.data.data);
+          setDataUpdate(res.data.data);
+          setName(res.data.data.name);
+          setAreaId(res.data.data.areaId);
+        });
+      };
+      fetchData();
+    }
+  }, []);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -57,12 +70,9 @@ export default function CreateNewBuilding() {
 
   useEffect(() => {
     const fetchData = async () => {
-      await axios
-        .get(getAreaIdAPI+ `/${areaId}`)
-        .then((res) => {
-          console.log(res.data.data);
-          setGetId(res.data.data);
-        });
+      await axios.get(getAreaIdAPI + `/${areaId}`).then((res) => {
+        setGetId(res.data.data);
+      });
     };
     fetchData();
   }, [getId]);
@@ -74,9 +84,23 @@ export default function CreateNewBuilding() {
         areaId,
       })
       .then((res) => {
-        console.log(res)
+        console.log(res);
         setName("");
-        setGetId('');
+        setGetId("");
+        swal("Good job!", res.data.message, "success");
+        navigate(-1);
+      });
+  };
+
+  const putData = () => {
+    axios
+      .put(getBuildingAPI, {
+        id: state.id,
+        name,
+        areaId,
+      })
+      .then((res) => {
+        console.log(res);
         swal("Good job!", res.data.message, "success");
         navigate(-1);
       });
@@ -176,9 +200,15 @@ export default function CreateNewBuilding() {
           </div>
         </div>
         <div className="createNewBuilding-btn-container">
-          <button onClick={postData} className="createNewBuilding-btn">
-            Tạo
-          </button>
+          {dataUpdate.length === 0 ? (
+            <button onClick={postData} className="createNewBuilding-btn">
+              Tạo
+            </button>
+          ) : (
+            <button onClick={putData} className="createNewBuilding-btn">
+              Cập nhật
+            </button>
+          )}
           <button
             onClick={() => navigate(-1)}
             className="createNewBuilding-btn"

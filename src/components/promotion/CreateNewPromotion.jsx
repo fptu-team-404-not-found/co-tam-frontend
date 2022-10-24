@@ -38,8 +38,6 @@ export default function CreateNewPromotion(props) {
 
   const { state } = useLocation();
 
-  console.log(state);
-
   const handleChangeDatestart = (newValue) => {
     setStartDate(newValue);
   };

@@ -68,6 +68,8 @@ export default function Navbar(props) {
           id="navbar-add-btn"
           LinkComponent={NavLink}
           to={props.linkBtn}
+          disabled={props.disabled}
+          style={props.styled}
         >
           Thêm
         </Button>
