@@ -12,9 +12,14 @@ import "./Service.scss";
 import swal from "sweetalert";
 
 const getAPI = "https://cotam.azurewebsites.net/api/services";
+const getDataCount = "https://cotam.azurewebsites.net/api/services/count";
 
 export default function Service() {
   const [data, setData] = useState([]);
+
+  const [count, setCount] = useState(0);
+  const [selectedPage, setSelectedPage] = useState(0);
+  const [selectedPageSize, setSelectedPageSize] = useState(8);
 
   const columns = [
     { field: "name", headerName: "Dịch vụ", width: 400 },
@@ -71,8 +76,8 @@ export default function Service() {
       await axios
         .get(getAPI, {
           params: {
-            pageIndex: 1,
-            pageSize: 20,
+            pageIndex: selectedPage + 1,
+            pageSize: selectedPageSize,
           },
         })
         .then((res) => {
@@ -80,7 +85,19 @@ export default function Service() {
         });
     };
     fetchData();
-  }, [data]);
+  }, [data, selectedPage, selectedPageSize]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      await axios
+        .get(getDataCount)
+        .then((res) => {
+          console.log(res.data.data);
+          setCount(res.data.data);
+        });
+    };
+    fetchData();
+  }, [count]);
 
   return (
     <>
@@ -91,8 +108,19 @@ export default function Service() {
           <DataGrid
             rows={data}
             columns={columns}
-            pageSize={8}
-            rowsPerPageOptions={[8]}
+            pageSize={selectedPageSize}
+            rowCount={count}
+            pagination={true}
+            paginationMode="server"
+            page={selectedPage}
+            onPageChange={(page) => {
+              console.log("Current Page: ", page);
+              setSelectedPage(page);
+            }}
+            onPageSizeChange={(pageSize) => {
+              console.log("Current Page Size: ", pageSize);
+              setSelectedPageSize(pageSize);
+            }}
           />
         </div>
       </div>

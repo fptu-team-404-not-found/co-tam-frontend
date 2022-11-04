@@ -14,10 +14,15 @@ import { CircularProgress } from "@mui/material";
 import { useNavigate } from "react-router";
 
 const getAPI = "https://cotam.azurewebsites.net/api/buildings";
+const getDataCount = "https://cotam.azurewebsites.net/api/buildings/count";
 
 export default function Building() {
   const [data, setData] = useState([]);
   const navigate = useNavigate();
+
+  const [count, setCount] = useState(0);
+  const [selectedPage, setSelectedPage] = useState(0);
+  const [selectedPageSize, setSelectedPageSize] = useState(8);
 
   const label = { inputProps: { "aria-label": "Switch demo" } };
 
@@ -106,8 +111,8 @@ export default function Building() {
       await axios
         .get(getAPI, {
           params: {
-            pageIndex: 1,
-            pageSize: 8,
+            pageIndex: selectedPage + 1,
+            pageSize: selectedPageSize,
           },
         })
         .then((res) => {
@@ -116,7 +121,19 @@ export default function Building() {
         });
     };
     fetchData();
-  }, [data]);
+  }, [data, selectedPage, selectedPageSize]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      await axios
+        .get(getDataCount)
+        .then((res) => {
+          console.log(res.data.data);
+          setCount(res.data.data);
+        });
+    };
+    fetchData();
+  }, [count]);
 
   return (
     <>
@@ -127,8 +144,19 @@ export default function Building() {
           {data.length === 0 ? <CircularProgress /> : <DataGrid
             rows={data}
             columns={columns}
-            pageSize={8}
-            rowsPerPageOptions={[8]}
+            pageSize={selectedPageSize}
+            rowCount={count}
+            pagination={true}
+            paginationMode="server"
+            page={selectedPage}
+            onPageChange={(page) => {
+              console.log("Current Page: ", page);
+              setSelectedPage(page);
+            }}
+            onPageSizeChange={(pageSize) => {
+              console.log("Current Page Size: ", pageSize);
+              setSelectedPageSize(pageSize);
+            }}
           />}
         </div>
       </div>

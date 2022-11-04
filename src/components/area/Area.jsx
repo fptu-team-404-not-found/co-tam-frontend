@@ -11,12 +11,18 @@ import Navbar from "../nav/Navbar";
 import "./Area.scss";
 import swal from "sweetalert";
 import { useNavigate } from "react-router";
+import { useSearchParams } from "react-router-dom";
 
 const getAPI = "https://cotam.azurewebsites.net/api/areas";
+const getDataCount = "https://cotam.azurewebsites.net/api/areas/count";
 
 export default function Area() {
   const [data, setData] = useState([]);
   const navigate = useNavigate();
+  const [count, setCount] = useState(0);
+
+  const [selectedPage, setSelectedPage] = useState(0);
+  const [selectedPageSize, setSelectedPageSize] = useState(8);
 
   const label = { inputProps: { "aria-label": "Switch demo" } };
 
@@ -31,13 +37,21 @@ export default function Area() {
       width: 60,
       renderCell: (data) => {
         const onClick = () => {
-          axios.get(getAPI + `/${data.id}`).then((res) => navigate('/createnewarea', {state: { id: data.id }}));
+          axios
+            .get(getAPI + `/${data.id}`)
+            .then((res) =>
+              navigate("/createnewarea", { state: { id: data.id } })
+            );
         };
-  
+
         return (
-          <EditIcon style={{ color: '#15BF81', cursor: 'pointer' }} onClick={onClick} defaultChecked/>
+          <EditIcon
+            style={{ color: "#15BF81", cursor: "pointer" }}
+            onClick={onClick}
+            defaultChecked
+          />
         );
-      }
+      },
     },
     {
       field: "active",
@@ -84,8 +98,8 @@ export default function Area() {
       await axios
         .get(getAPI, {
           params: {
-            pageIndex: 1,
-            pageSize: 40,
+            pageIndex: selectedPage + 1,
+            pageSize: selectedPageSize,
           },
         })
         .then((res) => {
@@ -94,20 +108,42 @@ export default function Area() {
         });
     };
     fetchData();
-  }, [data]);
+  }, [data, selectedPage, selectedPageSize]);
 
+  useEffect(() => {
+    const fetchData = async () => {
+      await axios
+        .get(getDataCount)
+        .then((res) => {
+          console.log(res.data.data);
+          setCount(res.data.data);
+        });
+    };
+    fetchData();
+  }, [count]);
 
   return (
     <>
       <div className="area-container">
-        <Navbar linkBtn="/createnewarea"/>
+        <Navbar linkBtn="/createnewarea" />
         <Header title="Danh sách khu vực" />
         <div className="area-table-container">
           <DataGrid
             rows={data}
             columns={columns}
-            pageSize={40}
-            rowsPerPageOptions={[8]}
+            pageSize={selectedPageSize}
+            rowCount={count}
+            pagination={true}
+            paginationMode="server"
+            page={selectedPage}
+            onPageChange={(page) => {
+              console.log("Current Page: ", page);
+              setSelectedPage(page);
+            }}
+            onPageSizeChange={(pageSize) => {
+              console.log("Current Page Size: ", pageSize);
+              setSelectedPageSize(pageSize);
+            }}
           />
         </div>
       </div>

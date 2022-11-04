@@ -14,6 +14,7 @@ import { Box } from "@mui/system";
 import swal from "sweetalert";
 
 const getAPI = "https://cotam.azurewebsites.net/api/managers";
+const getDataCount = "https://cotam.azurewebsites.net/api/managers/count"; 
 
 export default function AccountManager() {
   const [data, setData] = useState([]);
@@ -23,6 +24,9 @@ export default function AccountManager() {
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
   const [name, setName] = useState("");
+  const [selectedPage, setSelectedPage] = useState(0);
+  const [count, setCount] = useState(0);
+  const [selectedPageSize, setSelectedPageSize] = useState(8);
 
   const label = { inputProps: { "aria-label": "Switch demo" } };
 
@@ -106,8 +110,8 @@ export default function AccountManager() {
       await axios
         .get(getAPI, {
           params: {
-            pageIndex: 1,
-            pageSize: 20,
+            pageIndex: selectedPage + 1,
+            pageSize: selectedPageSize,
           },
         })
         .then((res) => {
@@ -115,7 +119,19 @@ export default function AccountManager() {
         });
     };
     fetchData();
-  }, [data]);
+  }, [data, selectedPage, selectedPageSize]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      await axios
+        .get(getDataCount)
+        .then((res) => {
+          setCount(res.data.data);
+        });
+    };
+    fetchData();
+  }, [count]);
+
 
   return (
     <>
@@ -137,8 +153,19 @@ export default function AccountManager() {
           <DataGrid
             rows={data}
             columns={columns}
-            pageSize={20}
-            rowsPerPageOptions={[8]}
+            pageSize={selectedPageSize}
+            rowCount={count}
+            pagination={true}
+            paginationMode="server"
+            page={selectedPage}
+            onPageChange={(page) => {
+              console.log("Current Page: ", page);
+              setSelectedPage(page);
+            }}
+            onPageSizeChange={(pageSize) => {
+              console.log("Current Page Size: ", pageSize);
+              setSelectedPageSize(pageSize);
+            }}
           />
         </div>
       </div>

@@ -14,6 +14,7 @@ import { Box } from "@mui/system";
 import swal from "sweetalert";
 
 const getAPI = "https://cotam.azurewebsites.net/api/customers";
+const getDataCount = "https://cotam.azurewebsites.net/api/customers/count"; 
 
 export default function AccountCustomer() {
   const [data, setData] = useState([]);
@@ -21,8 +22,13 @@ export default function AccountCustomer() {
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
   const [email, setEmail] = useState("");
+
+
   const [phone, setPhone] = useState("");
   const [name, setName] = useState("");
+  const [selectedPage, setSelectedPage] = useState(0);
+  const [selectedPageSize, setSelectedPageSize] = useState(8);
+  const [count, setCount] = useState(0);
 
   const label = { inputProps: { "aria-label": "Switch demo" } };
 
@@ -90,8 +96,8 @@ export default function AccountCustomer() {
       await axios
         .get(getAPI, {
           params: {
-            pageIndex: 1,
-            pageSize: 30,
+            pageIndex: selectedPage + 1,
+            pageSize: selectedPageSize,
           },
         })
         .then((res) => {
@@ -99,7 +105,18 @@ export default function AccountCustomer() {
         });
     };
     fetchData();
-  }, [data]);
+  }, [data, selectedPage, selectedPageSize]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      await axios
+        .get(getDataCount)
+        .then((res) => {
+          setCount(res.data.data);
+        });
+    };
+    fetchData();
+  }, [count]);
 
   const postData = () => {
     axios
@@ -109,6 +126,7 @@ export default function AccountCustomer() {
         phone,
       })
       .then((res) => {
+        console.log(res)
         setName("");
         setEmail("");
         setPhone("");
@@ -137,8 +155,19 @@ export default function AccountCustomer() {
           <DataGrid
             rows={data}
             columns={columns}
-            pageSize={50}
-            rowsPerPageOptions={[8]}
+            pageSize={selectedPageSize}
+            rowCount={count}
+            pagination={true}
+            paginationMode="server"
+            page={selectedPage}
+            onPageChange={(page) => {
+              console.log("Current Page: ", page);
+              setSelectedPage(page);
+            }}
+            onPageSizeChange={(pageSize) => {
+              console.log("Current Page Size: ", pageSize);
+              setSelectedPageSize(pageSize);
+            }}
           />
         </div>
       </div>

@@ -1,6 +1,6 @@
 import { Breadcrumbs } from "@mui/material";
 import { Stack } from "@mui/system";
-import React from "react";
+import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Header from "../header/Header";
 import Menu from "../menu/Menu";
@@ -12,6 +12,8 @@ import EditIcon from '@mui/icons-material/Edit';
 
 export default function AccountInformationCustomer() {
   const navigate = useNavigate();
+  const [selectedPage, setSelectedPage] = useState(0);
+  const [selectedPageSize, setSelectedPageSize] = useState(8);
 
   const breadcrumbs = [
     <Link

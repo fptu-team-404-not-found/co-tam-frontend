@@ -28,7 +28,7 @@ function App() {
   return (
     <>
       <Routes>
-        <Route path='/' element={<AccountManager />} />
+        <Route path='/' element={<Order />} />
         <Route path='/accountmanager' element={<AccountManager />} />
         <Route path='/accountcustomer' element={<AccountCustomer />}/>
         <Route path='/accounthouseworker' element={<AccountHouseWorker />}/>
