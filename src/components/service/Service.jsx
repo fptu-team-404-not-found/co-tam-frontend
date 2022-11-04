@@ -18,7 +18,7 @@ export default function Service() {
 
   const columns = [
     { field: "name", headerName: "Dịch vụ", width: 400 },
-    { field: "price", headerName: "Giá", width: 330 },
+    { field: "description", headerName: "Mô tả", width: 330 },
     {
       field: "extraServices",
       headerName: "Dịch vụ nâng cao",
