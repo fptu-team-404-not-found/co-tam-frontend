@@ -1,4 +1,4 @@
-import Switch from "@mui/material/Switch";
+
 import { DataGrid } from "@mui/x-data-grid";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
@@ -9,23 +9,22 @@ import EditIcon from "@mui/icons-material/Edit";
 const getAPI = "https://cotam.azurewebsites.net/api/orders";
 const getDataCount = "https://cotam.azurewebsites.net/api/orders/count";
 
-export default function Order() {
+export default function Order(props) {
   const [data, setData] = useState([]);
 
   const [count, setCount] = useState(0);
   const [selectedPage, setSelectedPage] = useState(0);
   const [selectedPageSize, setSelectedPageSize] = useState(8);
 
-  const label = { inputProps: { "aria-label": "Switch demo" } };
 
   const columns = [
-    { field: "dateTime", headerName: "Ngày", width: 300 },
+    { field: "dateTime", headerName: "Ngày", width: 360 },
     {
       field: "package",
-      headerName: "Số lượng nhân viên",
+      headerName: "Số giờ",
       width: 300,
       renderCell: (data) => {
-        return `${data.value.numberOfWorker} người`;
+        return data.value.name;
       },
     },
     {
@@ -37,14 +36,6 @@ export default function Order() {
       },
     },
     {
-      field: "promotion",
-      headerName: "Khuyến mãi",
-      width: 300,
-      renderCell: (data) => {
-        return data.value === null ? 'Không sử dụng' : data.value
-      },
-    },
-    {
         field: "total",
         headerName: "Tổng thanh toán",
         width: 300,
@@ -52,26 +43,17 @@ export default function Order() {
           return `${data.value} VNĐ`
         },
       },
-    {
-      field: "edit",
-      headerName: "",
-      sortable: false,
-      width: 80,
-      renderCell: (params) => {
-        const onClick = (e) => {};
-
-        return (
-          <EditIcon
-            style={{ color: "#15BF81" }}
-            onClick={onClick}
-            defaultChecked
-          />
-        );
+      {
+        field: "subTotal",
+        headerName: "Phí phụ",
+        width: 300,
+        renderCell: (data) => {
+          return `${data.value} VNĐ`
+        },
       },
-    },
   ];
 
-  const getData = useEffect(() => {
+  useEffect(() => {
     const fetchData = async () => {
       await axios
         .get(getAPI, {
@@ -81,7 +63,7 @@ export default function Order() {
           },
         })
         .then((res) => {
-          console.log(res.data.data.length);
+          console.log(res.data.data);
           setData(res.data.data);
         });
     };
@@ -103,8 +85,8 @@ export default function Order() {
   return (
     <>
       <div className="area-container">
-        <Navbar />
-        <Header title="Danh sách khu vực" />
+        <Navbar disabled='disabled' styled={{ display: 'none' }}/>
+        <Header title="Danh sách đơn hàng" />
         <div className="area-table-container">
           <DataGrid
             rows={data}

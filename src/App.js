@@ -23,12 +23,18 @@ import CreateNewService from './components/service/CreateNewService';
 import AccountManager from './components/account/AccountManager';
 import Order from './components/order/Order';
 import Login from './components/login/Login';
+import { setAuthToken } from './setAuthToken';
 
 function App() {
+  //check jwt token
+ const token = localStorage.getItem("token");
+ if (token) {
+     setAuthToken(token);
+ }
   return (
     <>
       <Routes>
-        <Route path='/' element={<Order />} />
+        <Route path='/' element={<Login />} />
         <Route path='/accountmanager' element={<AccountManager />} />
         <Route path='/accountcustomer' element={<AccountCustomer />}/>
         <Route path='/accounthouseworker' element={<AccountHouseWorker />}/>

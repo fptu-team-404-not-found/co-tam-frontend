@@ -14,8 +14,10 @@
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
     "axios": "^0.27.2",
+    "cors": "^2.8.5",
     "dayjs": "^1.11.5",
     "full-text-search-light": "^0.0.18",
+    "google-auth-library": "^8.6.0",
     "http-proxy-middleware": "^2.0.6",
     "moment": "^2.29.4",
     "react": "^18.2.0",
@@ -25,6 +27,7 @@
     "react-router": "^6.4.1",
     "react-router-dom": "^6.4.1",
     "react-scripts": "5.0.1",
+    "react-token-auth": "^2.3.8",
     "sass": "^1.55.0",
     "sweetalert": "^2.1.2",
     "web-vitals": "^2.1.4"
