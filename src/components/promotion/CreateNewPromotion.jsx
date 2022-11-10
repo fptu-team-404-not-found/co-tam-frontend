@@ -155,7 +155,7 @@ export default function CreateNewPromotion(props) {
 
   return (
     <>
-      <Menu />
+      <Menu styledPromotion={{background: 'rgba(255, 255, 255, 0.5)'}}/>
       <div className="createNewPromotion-container">
         <ArrowBackIcon
           onClick={() => navigate(-1)}

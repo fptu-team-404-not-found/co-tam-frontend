@@ -36,7 +36,7 @@ export default function AccountInformationCustomer() {
 
   return (
     <>
-      <Menu />
+      <Menu styledAccount={{background: 'rgba(255, 255, 255, 0.5)'}}/>
       <div className="accountInformation-container">
         <ArrowBackIcon
           onClick={() => navigate(-1)}

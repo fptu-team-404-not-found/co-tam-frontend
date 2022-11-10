@@ -97,7 +97,7 @@ export default function Service() {
         });
     };
     fetchData();
-  }, [count]);
+  });
 
   return (
     <>

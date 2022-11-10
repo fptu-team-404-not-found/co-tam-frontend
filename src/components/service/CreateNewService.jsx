@@ -63,7 +63,7 @@ export default function CreateNewService() {
 
   return (
     <>
-      <Menu />
+      <Menu styledService={{background: 'rgba(255, 255, 255, 0.5)'}}/>
       <div className="createNewService-container">
         <ArrowBackIcon
           onClick={() => navigate(-1)}

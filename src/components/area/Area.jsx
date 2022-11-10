@@ -21,6 +21,10 @@ export default function Area() {
   const navigate = useNavigate();
   const [count, setCount] = useState(0);
 
+  const [search, setSearch] = useState("");
+  const [dataFilter, setDataFilter] = useState([]);
+  const [searchCount, setSearchCount] = useState(0);
+
   const [selectedPage, setSelectedPage] = useState(0);
   const [selectedPageSize, setSelectedPageSize] = useState(8);
 
@@ -112,27 +116,65 @@ export default function Area() {
 
   useEffect(() => {
     const fetchData = async () => {
+      await axios.get(getDataCount).then((res) => {
+        console.log(res.data.data);
+        setCount(res.data.data);
+      });
+    };
+    fetchData();
+  });
+
+  useEffect(() => {
+    const fetchData = async () => {
       await axios
-        .get(getDataCount)
+        .get(getAPI + `/search/${search}`, {
+          headers: {
+            Authorization: `bearer ${localStorage.getItem("accessToken")}`,
+          },
+          params: {
+            pageIndex: selectedPage + 1,
+            pageSize: selectedPageSize,
+          },
+        })
         .then((res) => {
-          console.log(res.data.data);
-          setCount(res.data.data);
+          console.log(res);
+          setDataFilter(res.data.data);
         });
     };
     fetchData();
-  }, [count]);
+  }, [search]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      await axios
+        .get(getAPI + `/search/count/${search}`, {
+          headers: {
+            Authorization: `bearer ${localStorage.getItem("accessToken")}`,
+          },
+        })
+        .then((res) => {
+          console.log(res.data.data);
+          setSearchCount(res.data.data);
+        });
+    };
+    fetchData();
+  });
 
   return (
     <>
       <div className="area-container">
-        <Navbar linkBtn="/createnewarea" />
+        <Navbar
+          linkBtn="/createnewarea"
+          searchValue={search}
+          onChangeSearch={(e) => setSearch(e.target.value)}
+        />
         <Header title="Danh sách khu vực" />
         <div className="area-table-container">
           <DataGrid
-            rows={data}
+            rows={search == "" ? data : dataFilter}
             columns={columns}
             pageSize={selectedPageSize}
-            rowCount={count}
+            rowCount={search == "" ? count : searchCount}
             pagination={true}
             paginationMode="server"
             page={selectedPage}

@@ -17,9 +17,10 @@ import AddIcon from "@mui/icons-material/Add";
 import { Box } from "@mui/material";
 import HighlightOffIcon from "@mui/icons-material/HighlightOff";
 import { NavLink } from "react-router-dom";
+import MenuManager from "../menu/MenuManager";
 import Logout from "../logout/Logout";
 
-export default function Navbar(props) {
+export default function NavbarManager(props) {
   const [jobSelected, setJobSelected] = useState([]);
 
   const jobs = [
@@ -49,15 +50,15 @@ export default function Navbar(props) {
 
   return (
     <>
-      <Menu />
+      <MenuManager />
       <Logout />
       <div className="navbar-container">
         <TextField
           className="navbar-search"
           label="Tìm kiếm"
+          type="search"
           value={props.searchValue}
           onChange={props.onChangeSearch}
-          type="search"
           InputProps={{
             endAdornment: (
               <InputAdornment position="start">
