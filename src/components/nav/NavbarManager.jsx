@@ -19,6 +19,10 @@ import HighlightOffIcon from "@mui/icons-material/HighlightOff";
 import { NavLink } from "react-router-dom";
 import MenuManager from "../menu/MenuManager";
 import Logout from "../logout/Logout";
+import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
+import dayjs from 'dayjs';
+import { LocalizationProvider } from "@mui/x-date-pickers";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 
 export default function NavbarManager(props) {
   const [jobSelected, setJobSelected] = useState([]);
@@ -136,6 +140,24 @@ export default function NavbarManager(props) {
                   type="text"
                 />
               </div>
+              <div style={{marginTop: '24px'}} className="navbar-modal-input-container">
+                <LocalizationProvider dateAdapter={AdapterDayjs}>
+                  <label
+                    className="navbar-modal-label"
+                    htmlFor="navbar-modal-phone"
+                  >
+                    Ngày sinh
+                  </label>
+                  <DesktopDatePicker
+                    label="Sinh nhật"
+                    className="navbar-modal-input"
+                    inputFormat="MM/DD/YYYY"
+                    value={props.valueDate}
+                    onChange={props.onChangeDate}
+                    renderInput={(params) => <TextField {...params} />}
+                  />
+                </LocalizationProvider>
+              </div>
               <button onClick={props.addClick} className="navbar-modal-create">TẠO MỚI</button>
             </div>
           </Box>
@@ -199,6 +221,24 @@ export default function NavbarManager(props) {
                   type="text"
                 />
               </div>
+              <div style={{marginTop: '24px'}} className="navbar-modal-input-container">
+                <LocalizationProvider dateAdapter={AdapterDayjs}>
+                  <label
+                    className="navbar-modal-label"
+                    htmlFor="navbar-modal-phone"
+                  >
+                    Ngày sinh
+                  </label>
+                  <DesktopDatePicker
+                    label="Sinh nhật"
+                    className="navbar-modal-input"
+                    inputFormat="MM/DD/YYYY"
+                    value={props.valueDate}
+                    onChange={props.onChangeDate}
+                    renderInput={(params) => <TextField {...params} />}
+                  />
+                </LocalizationProvider>
+              </div>
               <button onClick={props.addClick} className="navbar-modal-create">TẠO MỚI</button>
             </div>
           </Box>
@@ -261,6 +301,24 @@ export default function NavbarManager(props) {
                   value={props.valuePhone}
                   onChange={props.onChangePhone}
                 />
+              </div>
+              <div style={{marginTop: '24px'}} className="navbar-modal-input-container">
+                <LocalizationProvider dateAdapter={AdapterDayjs}>
+                  <label
+                    className="navbar-modal-label"
+                    htmlFor="navbar-modal-phone"
+                  >
+                    Ngày sinh
+                  </label>
+                  <DesktopDatePicker
+                    label="Sinh nhật"
+                    className="navbar-modal-input"
+                    inputFormat="MM/DD/YYYY"
+                    value={props.valueDate}
+                    onChange={props.onChangeDate}
+                    renderInput={(params) => <TextField {...params} />}
+                  />
+                </LocalizationProvider>
               </div>
               {/* <div className="navbar-modal-input-container">
                 <label

@@ -11,6 +11,7 @@ import {
   TextField,
 } from "@mui/material";
 import React, { useState } from "react";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import Menu from "../menu/Menu";
 import "./Navbar.scss";
 import AddIcon from "@mui/icons-material/Add";
@@ -18,9 +19,17 @@ import { Box } from "@mui/material";
 import HighlightOffIcon from "@mui/icons-material/HighlightOff";
 import { NavLink } from "react-router-dom";
 import Logout from "../logout/Logout";
+import { DesktopDatePicker } from "@mui/x-date-pickers/DesktopDatePicker";
+import dayjs from "dayjs";
+import { LocalizationProvider } from "@mui/x-date-pickers";
 
 export default function Navbar(props) {
   const [jobSelected, setJobSelected] = useState([]);
+  const [value, setValue] = useState(dayjs(""));
+
+  const handleChangeDate = (newValue) => {
+    setValue(newValue);
+  };
 
   const jobs = [
     "Dọn dẹp vệ sinh",
@@ -135,7 +144,27 @@ export default function Navbar(props) {
                   type="text"
                 />
               </div>
-              <button onClick={props.addClick} className="navbar-modal-create">TẠO MỚI</button>
+              <div style={{marginTop: '24px'}} className="navbar-modal-input-container">
+                <LocalizationProvider dateAdapter={AdapterDayjs}>
+                  <label
+                    className="navbar-modal-label"
+                    htmlFor="navbar-modal-phone"
+                  >
+                    Ngày sinh
+                  </label>
+                  <DesktopDatePicker
+                  className="navbar-modal-input"
+                    label="Sinh nhật"
+                    inputFormat="MM/DD/YYYY"
+                    value={props.valueDate}
+                    onChange={props.onChangeDate}
+                    renderInput={(params) => <TextField {...params} />}
+                  />
+                </LocalizationProvider>
+              </div>
+              <button onClick={props.addClick} className="navbar-modal-create">
+                TẠO MỚI
+              </button>
             </div>
           </Box>
         </Modal>
@@ -198,7 +227,27 @@ export default function Navbar(props) {
                   type="text"
                 />
               </div>
-              <button onClick={props.addClick} className="navbar-modal-create">TẠO MỚI</button>
+              <div style={{marginTop: '24px'}} className="navbar-modal-input-container">
+                <LocalizationProvider dateAdapter={AdapterDayjs}>
+                  <label
+                    className="navbar-modal-label"
+                    htmlFor="navbar-modal-phone"
+                  >
+                    Ngày sinh
+                  </label>
+                  <DesktopDatePicker
+                    label="Sinh nhật"
+                    className="navbar-modal-input"
+                    inputFormat="MM/DD/YYYY"
+                    value={props.valueDate}
+                    onChange={props.onChangeDate}
+                    renderInput={(params) => <TextField {...params} />}
+                  />
+                </LocalizationProvider>
+              </div>
+              <button onClick={props.addClick} className="navbar-modal-create">
+                TẠO MỚI
+              </button>
             </div>
           </Box>
         </Modal>
@@ -261,6 +310,24 @@ export default function Navbar(props) {
                   onChange={props.onChangePhone}
                 />
               </div>
+              <div style={{marginTop: '24px'}} className="navbar-modal-input-container">
+                <LocalizationProvider dateAdapter={AdapterDayjs}>
+                  <label
+                    className="navbar-modal-label"
+                    htmlFor="navbar-modal-phone"
+                  >
+                    Ngày sinh
+                  </label>
+                  <DesktopDatePicker
+                    label="Sinh nhật"
+                    className="navbar-modal-input"
+                    inputFormat="MM/DD/YYYY"
+                    value={props.valueDate}
+                    onChange={props.onChangeDate}
+                    renderInput={(params) => <TextField {...params} />}
+                  />
+                </LocalizationProvider>
+              </div>
               {/* <div className="navbar-modal-input-container">
                 <label
                   className="navbar-modal-label"
@@ -286,7 +353,9 @@ export default function Navbar(props) {
                   </Select>
                 </FormControl>
               </div> */}
-              <button onClick={props.addClick} className="navbar-modal-create">TẠO MỚI</button>
+              <button onClick={props.addClick} className="navbar-modal-create">
+                TẠO MỚI
+              </button>
             </div>
           </Box>
         </Modal>

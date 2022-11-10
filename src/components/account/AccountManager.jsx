@@ -12,6 +12,8 @@ import HighlightOffIcon from "@mui/icons-material/HighlightOff";
 import AddIcon from "@mui/icons-material/Add";
 import { Box } from "@mui/system";
 import swal from "sweetalert";
+import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
+import dayjs from 'dayjs';
 
 const getAPI = "https://cotam.azurewebsites.net/api/managers";
 const getDataCount = "https://cotam.azurewebsites.net/api/managers/count";
@@ -25,6 +27,9 @@ export default function AccountManager() {
   const [phone, setPhone] = useState("");
   const [name, setName] = useState("");
   const [search, setSearch] = useState("");
+
+  const [dateOfBirth, setDateOfBirth] = useState(dayjs(''));
+
 
   const [dataFilter, setDataFilter] = useState([]);
 
@@ -102,6 +107,11 @@ export default function AccountManager() {
     },
   ];
 
+  
+  const handleChangeDate = (newValue) => {
+    setDateOfBirth(newValue);
+  };
+
   const postData = () => {
     axios
       .post(
@@ -110,6 +120,7 @@ export default function AccountManager() {
           name,
           email,
           phone,
+          dateOfBirth
         },
         {
           headers: {
@@ -121,6 +132,7 @@ export default function AccountManager() {
         setName("");
         setEmail("");
         setPhone("");
+        setDateOfBirth("");
         setOpen(false);
         swal("Good job!", res.data.message, "success");
       });
@@ -214,6 +226,8 @@ export default function AccountManager() {
           onChangeName={(e) => setName(e.target.value)}
           searchValue={search}
           onChangeSearch={(e) => setSearch(e.target.value)}
+          valueDate={dateOfBirth}
+          onChangeDate={handleChangeDate}
         />
         <Header title="Danh sách tài khoản quản lý" />
         <div className="account-table-container">

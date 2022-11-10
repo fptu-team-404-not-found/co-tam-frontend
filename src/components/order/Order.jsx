@@ -25,7 +25,7 @@ export default function Order(props) {
       headerName: "Số giờ",
       width: 300,
       renderCell: (data) => {
-        return data.value.name;
+        return data.value.duration + ' giờ';
       },
     },
     {

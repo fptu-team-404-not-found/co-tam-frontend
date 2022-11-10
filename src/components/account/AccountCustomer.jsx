@@ -14,6 +14,8 @@ import { Box } from "@mui/system";
 import swal from "sweetalert";
 import Logout from "../logout/Logout";
 import NavbarManager from "../nav/NavbarManager";
+import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
+import dayjs from 'dayjs';
 
 const getAPI = "https://cotam.azurewebsites.net/api/customers";
 const getDataCount = "https://cotam.azurewebsites.net/api/customers/count"; 
@@ -24,6 +26,8 @@ export default function AccountCustomer() {
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
   const [email, setEmail] = useState("");
+
+  const [dateOfBirth, setDateOfBirth] = useState(dayjs(''));
 
   const [search, setSearch] = useState("");
   const [dataFilter, setDataFilter] = useState([]);
@@ -36,6 +40,10 @@ export default function AccountCustomer() {
   const [count, setCount] = useState(0);
 
   const label = { inputProps: { "aria-label": "Switch demo" } };
+
+  const handleChangeDate = (newValue) => {
+    setDateOfBirth(newValue);
+  };
 
   const columns = [
     { field: "name", headerName: "Họ tên", width: 400 },
@@ -129,12 +137,14 @@ export default function AccountCustomer() {
         name,
         email,
         phone,
+        dateOfBirth
       })
       .then((res) => {
         console.log(res)
         setName("");
         setEmail("");
         setPhone("");
+        setDateOfBirth("");
         setOpen(false);
         swal("Good job!", res.data.message, "success");
       });
@@ -193,6 +203,8 @@ export default function AccountCustomer() {
           onChangeName={(e) => setName(e.target.value)}
           searchValue={search}
           onChangeSearch={(e) => setSearch(e.target.value)}
+          valueDate={dateOfBirth}
+          onChangeDate={handleChangeDate}
         />
         <HeaderHaveTab value="3" title="Danh sách tài khoản khách hàng" />
         <div className="account-table-container">

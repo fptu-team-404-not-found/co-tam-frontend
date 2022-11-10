@@ -12,6 +12,8 @@ import NavbarManager from "../nav/NavbarManager";
 import { useNavigate } from "react-router";
 import EditIcon from "@mui/icons-material/Edit";
 import Logout from "../logout/Logout";
+import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
+import dayjs from 'dayjs';
 
 const getAPI = "https://cotam.azurewebsites.net/api/houseworkers";
 const getDataCount = "https://cotam.azurewebsites.net/api/houseworkers/count";
@@ -27,7 +29,7 @@ export default function AccountHouseWorker(props) {
   const [selectedPage, setSelectedPage] = useState(0);
   const [count, setCount] = useState(0);
   const [selectedPageSize, setSelectedPageSize] = useState(8);
-
+  const [dateOfBirth, setDateOfBirth] = useState(dayjs(''));
   const [search, setSearch] = useState("");
   const [dataFilter, setDataFilter] = useState([]);
   const [searchCount, setSearchCount] = useState(0);
@@ -127,6 +129,10 @@ export default function AccountHouseWorker(props) {
     },
   ];
 
+  const handleChangeDate = (newValue) => {
+    setDateOfBirth(newValue);
+  };
+
   const postData = () => {
     axios
       .post(
@@ -135,6 +141,7 @@ export default function AccountHouseWorker(props) {
           name,
           email,
           phone,
+          dateOfBirth
         },
         {
           headers: {
@@ -146,6 +153,7 @@ export default function AccountHouseWorker(props) {
         setName("");
         setEmail("");
         setPhone("");
+        setDateOfBirth("");
         setOpen(false);
         swal("Good job!", res.data.message, "success");
       });
@@ -234,6 +242,8 @@ export default function AccountHouseWorker(props) {
           onChangeName={(e) => setName(e.target.value)}
           searchValue={search}
           onChangeSearch={(e) => setSearch(e.target.value)}
+          valueDate={dateOfBirth}
+          onChangeDate={handleChangeDate}
         />
         <HeaderHaveTab value={2} title="Danh sách tài khoản nhân viên" />
         <div className="account-table-container">
