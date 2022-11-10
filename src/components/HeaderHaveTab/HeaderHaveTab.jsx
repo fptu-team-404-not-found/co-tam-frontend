@@ -17,13 +17,13 @@ export default function HeaderHaveTab(header, tab) {
   return (
     <>
       <Tabs id="headerHaveTab-tab-container" onChange={handleChange}>
-        <Tab
+        {/* <Tab
           value={1}
           className="headerHaveTab-tab"
           label="Quản lý"
           component={NavLink}
           to="/accountmanager"
-        />
+        /> */}
         <Tab
           value={2}
           className="headerHaveTab-tab"

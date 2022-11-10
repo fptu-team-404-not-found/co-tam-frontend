@@ -20,6 +20,10 @@ export default function Building() {
   const [data, setData] = useState([]);
   const navigate = useNavigate();
 
+  const [search, setSearch] = useState("");
+  const [dataFilter, setDataFilter] = useState([]);
+  const [searchCount, setSearchCount] = useState(0);
+
   const [count, setCount] = useState(0);
   const [selectedPage, setSelectedPage] = useState(0);
   const [selectedPageSize, setSelectedPageSize] = useState(8);
@@ -59,13 +63,21 @@ export default function Building() {
       width: 80,
       renderCell: (data) => {
         const onClick = () => {
-          axios.get(getAPI + `/${data.id}`).then((res) => navigate('/createnewbuilding', {state: { id: data.id }}));
+          axios
+            .get(getAPI + `/${data.id}`)
+            .then((res) =>
+              navigate("/createnewbuilding", { state: { id: data.id } })
+            );
         };
-  
+
         return (
-          <EditIcon style={{ color: '#15BF81', cursor: 'pointer' }} onClick={onClick} defaultChecked/>
+          <EditIcon
+            style={{ color: "#15BF81", cursor: "pointer" }}
+            onClick={onClick}
+            defaultChecked
+          />
         );
-      }
+      },
     },
     {
       field: "active",
@@ -125,39 +137,81 @@ export default function Building() {
 
   useEffect(() => {
     const fetchData = async () => {
+      await axios.get(getDataCount).then((res) => {
+        console.log(res.data.data);
+        setCount(res.data.data);
+      });
+    };
+    fetchData();
+  });
+
+  useEffect(() => {
+    const fetchData = async () => {
       await axios
-        .get(getDataCount)
+        .get(getAPI + `/search/${search}`, {
+          headers: {
+            Authorization: `bearer ${localStorage.getItem("accessToken")}`,
+          },
+          params: {
+            pageIndex: selectedPage + 1,
+            pageSize: selectedPageSize,
+          },
+        })
         .then((res) => {
-          console.log(res.data.data);
-          setCount(res.data.data);
+          console.log(res);
+          setDataFilter(res.data.data);
         });
     };
     fetchData();
-  }, [count]);
+  }, [search]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      await axios
+        .get(getAPI + `/search/count/${search}`, {
+          headers: {
+            Authorization: `bearer ${localStorage.getItem("accessToken")}`,
+          },
+        })
+        .then((res) => {
+          console.log(res.data.data);
+          setSearchCount(res.data.data);
+        });
+    };
+    fetchData();
+  });
 
   return (
     <>
       <div className="building-container">
-        <Navbar linkBtn='/createnewbuilding'/>
+        <Navbar
+          linkBtn="/createnewbuilding"
+          searchValue={search}
+          onChangeSearch={(e) => setSearch(e.target.value)}
+        />
         <Header title="Danh sách tòa nhà" />
         <div className="building-table-container">
-          {data.length === 0 ? <CircularProgress /> : <DataGrid
-            rows={data}
-            columns={columns}
-            pageSize={selectedPageSize}
-            rowCount={count}
-            pagination={true}
-            paginationMode="server"
-            page={selectedPage}
-            onPageChange={(page) => {
-              console.log("Current Page: ", page);
-              setSelectedPage(page);
-            }}
-            onPageSizeChange={(pageSize) => {
-              console.log("Current Page Size: ", pageSize);
-              setSelectedPageSize(pageSize);
-            }}
-          />}
+          {data.length === 0 ? (
+            <CircularProgress />
+          ) : (
+            <DataGrid
+              rows={search == "" ? data : dataFilter}
+              columns={columns}
+              pageSize={selectedPageSize}
+              rowCount={search == "" ? count : searchCount}
+              pagination={true}
+              paginationMode="server"
+              page={selectedPage}
+              onPageChange={(page) => {
+                console.log("Current Page: ", page);
+                setSelectedPage(page);
+              }}
+              onPageSizeChange={(pageSize) => {
+                console.log("Current Page Size: ", pageSize);
+                setSelectedPageSize(pageSize);
+              }}
+            />
+          )}
         </div>
       </div>
     </>

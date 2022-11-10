@@ -11,25 +11,21 @@ import {
   TextField,
 } from "@mui/material";
 import React, { useState } from "react";
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import Menu from "../menu/Menu";
 import "./Navbar.scss";
 import AddIcon from "@mui/icons-material/Add";
 import { Box } from "@mui/material";
 import HighlightOffIcon from "@mui/icons-material/HighlightOff";
 import { NavLink } from "react-router-dom";
+import MenuManager from "../menu/MenuManager";
 import Logout from "../logout/Logout";
-import { DesktopDatePicker } from "@mui/x-date-pickers/DesktopDatePicker";
-import dayjs from "dayjs";
+import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
+import dayjs from 'dayjs';
 import { LocalizationProvider } from "@mui/x-date-pickers";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 
-export default function Navbar(props) {
+export default function NavbarManager(props) {
   const [jobSelected, setJobSelected] = useState([]);
-  const [value, setValue] = useState(dayjs(""));
-
-  const handleChangeDate = (newValue) => {
-    setValue(newValue);
-  };
 
   const jobs = [
     "Dọn dẹp vệ sinh",
@@ -58,15 +54,15 @@ export default function Navbar(props) {
 
   return (
     <>
-      <Menu />
+      <MenuManager />
       <Logout />
       <div className="navbar-container">
         <TextField
           className="navbar-search"
           label="Tìm kiếm"
+          type="search"
           value={props.searchValue}
           onChange={props.onChangeSearch}
-          type="search"
           InputProps={{
             endAdornment: (
               <InputAdornment position="start">
@@ -153,8 +149,8 @@ export default function Navbar(props) {
                     Ngày sinh
                   </label>
                   <DesktopDatePicker
-                  className="navbar-modal-input"
                     label="Sinh nhật"
+                    className="navbar-modal-input"
                     inputFormat="MM/DD/YYYY"
                     value={props.valueDate}
                     onChange={props.onChangeDate}
@@ -162,9 +158,7 @@ export default function Navbar(props) {
                   />
                 </LocalizationProvider>
               </div>
-              <button onClick={props.addClick} className="navbar-modal-create">
-                TẠO MỚI
-              </button>
+              <button onClick={props.addClick} className="navbar-modal-create">TẠO MỚI</button>
             </div>
           </Box>
         </Modal>
@@ -245,9 +239,7 @@ export default function Navbar(props) {
                   />
                 </LocalizationProvider>
               </div>
-              <button onClick={props.addClick} className="navbar-modal-create">
-                TẠO MỚI
-              </button>
+              <button onClick={props.addClick} className="navbar-modal-create">TẠO MỚI</button>
             </div>
           </Box>
         </Modal>
@@ -353,9 +345,7 @@ export default function Navbar(props) {
                   </Select>
                 </FormControl>
               </div> */}
-              <button onClick={props.addClick} className="navbar-modal-create">
-                TẠO MỚI
-              </button>
+              <button onClick={props.addClick} className="navbar-modal-create">TẠO MỚI</button>
             </div>
           </Box>
         </Modal>

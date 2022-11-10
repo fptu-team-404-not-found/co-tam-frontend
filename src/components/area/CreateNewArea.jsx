@@ -128,7 +128,7 @@ export default function CreateNewArea() {
 
   return (
     <>
-      <Menu />
+      <Menu styledArea={{background: 'rgba(255, 255, 255, 0.5)'}}/>
       <div className="createNewArea-container">
         <ArrowBackIcon
           onClick={() => navigate(-1)}

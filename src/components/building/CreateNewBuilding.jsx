@@ -134,7 +134,7 @@ export default function CreateNewBuilding() {
 
   return (
     <>
-      <Menu />
+      <Menu styledBuilding={{background: 'rgba(255, 255, 255, 0.5)'}} />
       <div className="createNewBuilding-container">
         <ArrowBackIcon
           onClick={() => navigate(-1)}
@@ -149,7 +149,7 @@ export default function CreateNewBuilding() {
           {breadcrumbs}
         </Breadcrumbs>
       </div>
-      <Header title="Thêm tòa nhà mới" />
+      {data.length === 0 ? <Header title="Thêm tòa nhà mới" /> : <Header title="Chỉnh sửa tòa nhà" /> }
       <FormControl id="createNewBuilding-form-container">
         <div className="createNewBuilding-create-building-container-side">
           <div className="createNewBuilding-create-building-container-left">

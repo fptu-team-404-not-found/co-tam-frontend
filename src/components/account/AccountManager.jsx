@@ -12,9 +12,11 @@ import HighlightOffIcon from "@mui/icons-material/HighlightOff";
 import AddIcon from "@mui/icons-material/Add";
 import { Box } from "@mui/system";
 import swal from "sweetalert";
+import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
+import dayjs from 'dayjs';
 
 const getAPI = "https://cotam.azurewebsites.net/api/managers";
-const getDataCount = "https://cotam.azurewebsites.net/api/managers/count"; 
+const getDataCount = "https://cotam.azurewebsites.net/api/managers/count";
 
 export default function AccountManager() {
   const [data, setData] = useState([]);
@@ -24,7 +26,15 @@ export default function AccountManager() {
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
   const [name, setName] = useState("");
+  const [search, setSearch] = useState("");
+
+  const [dateOfBirth, setDateOfBirth] = useState(dayjs(''));
+
+
+  const [dataFilter, setDataFilter] = useState([]);
+
   const [selectedPage, setSelectedPage] = useState(0);
+  const [searchCount, setSearchCount] = useState(0);
   const [count, setCount] = useState(0);
   const [selectedPageSize, setSelectedPageSize] = useState(8);
 
@@ -63,7 +73,15 @@ export default function AccountManager() {
             dangerMode: true,
           }).then((willDelete) => {
             if (willDelete) {
-              axios.delete(getAPI + `/${id}`).then(() => {});
+              axios
+                .delete(getAPI + `/${id}`, {
+                  headers: {
+                    Authorization: `bearer ${localStorage.getItem(
+                      "accessToken"
+                    )}`,
+                  },
+                })
+                .then(() => {});
               swal("Success", {
                 icon: "success",
               });
@@ -89,17 +107,32 @@ export default function AccountManager() {
     },
   ];
 
+  
+  const handleChangeDate = (newValue) => {
+    setDateOfBirth(newValue);
+  };
+
   const postData = () => {
     axios
-      .post(getAPI, {
-        name,
-        email,
-        phone,
-      })
+      .post(
+        getAPI,
+        {
+          name,
+          email,
+          phone,
+          dateOfBirth
+        },
+        {
+          headers: {
+            Authorization: `bearer ${localStorage.getItem("accessToken")}`,
+          },
+        }
+      )
       .then((res) => {
         setName("");
         setEmail("");
         setPhone("");
+        setDateOfBirth("");
         setOpen(false);
         swal("Good job!", res.data.message, "success");
       });
@@ -109,6 +142,9 @@ export default function AccountManager() {
     const fetchData = async () => {
       await axios
         .get(getAPI, {
+          headers: {
+            Authorization: `bearer ${localStorage.getItem("accessToken")}`,
+          },
           params: {
             pageIndex: selectedPage + 1,
             pageSize: selectedPageSize,
@@ -124,14 +160,55 @@ export default function AccountManager() {
   useEffect(() => {
     const fetchData = async () => {
       await axios
-        .get(getDataCount)
+        .get(getDataCount, {
+          headers: {
+            Authorization: `bearer ${localStorage.getItem("accessToken")}`,
+          },
+        })
         .then((res) => {
           setCount(res.data.data);
         });
     };
     fetchData();
-  }, [count]);
+  });
 
+  useEffect(() => {
+    const fetchData = async () => {
+      await axios
+        .get(getAPI + `/search/${search}`, {
+          headers: {
+            Authorization: `bearer ${localStorage.getItem("accessToken")}`,
+          },
+          params: {
+            pageIndex: selectedPage + 1,
+            pageSize: selectedPageSize,
+          },
+        })
+        .then((res) => {
+          console.log(res);
+          setDataFilter(res.data.data)
+        });
+    };
+    fetchData();
+  }, [search]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      await axios
+        .get(getAPI + `/search/count/${search}`, {
+          headers: {
+            Authorization: `bearer ${localStorage.getItem("accessToken")}`,
+          },
+        })
+        .then((res) => {
+          console.log(res.data.data);
+          setSearchCount(res.data.data);
+        });
+    };
+    fetchData();
+  });
+
+  console.log(dataFilter);
 
   return (
     <>
@@ -147,14 +224,18 @@ export default function AccountManager() {
           addClick={postData}
           valueName={name}
           onChangeName={(e) => setName(e.target.value)}
+          searchValue={search}
+          onChangeSearch={(e) => setSearch(e.target.value)}
+          valueDate={dateOfBirth}
+          onChangeDate={handleChangeDate}
         />
-        <HeaderHaveTab value="1" title="Danh sách tài khoản quản lý" />
+        <Header title="Danh sách tài khoản quản lý" />
         <div className="account-table-container">
           <DataGrid
-            rows={data}
+            rows={search == '' ? data : dataFilter}
             columns={columns}
             pageSize={selectedPageSize}
-            rowCount={count}
+            rowCount={search == '' ? count : searchCount}
             pagination={true}
             paginationMode="server"
             page={selectedPage}

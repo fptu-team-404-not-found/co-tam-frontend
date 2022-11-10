@@ -3,8 +3,8 @@ import axios from "axios";
 
 import { DataGrid } from "@mui/x-data-grid";
 import Switch from "@mui/material/Switch";
-import EditIcon from '@mui/icons-material/Edit';
-import DeleteIcon from '@mui/icons-material/Delete';
+import EditIcon from "@mui/icons-material/Edit";
+import DeleteIcon from "@mui/icons-material/Delete";
 
 import Header from "../header/Header";
 import Navbar from "../nav/Navbar";
@@ -12,13 +12,16 @@ import "./Promotion.scss";
 import swal from "sweetalert";
 import { useNavigate } from "react-router";
 
-
 const getAPI = "https://cotam.azurewebsites.net/api/promotions";
 const getDataCount = "https://cotam.azurewebsites.net/api/promotions/count";
 
 export default function Promotion(props) {
   const [data, setData] = useState([]);
   const navigate = useNavigate();
+
+  const [search, setSearch] = useState("");
+  const [dataFilter, setDataFilter] = useState([]);
+  const [searchCount, setSearchCount] = useState(0);
 
   const [count, setCount] = useState(0);
   const [selectedPage, setSelectedPage] = useState(0);
@@ -40,13 +43,21 @@ export default function Promotion(props) {
       width: 60,
       renderCell: (data) => {
         const onClick = () => {
-          axios.get(getAPI + `/${data.id}`).then((res) => navigate('/createnewpromotion', {state: { id: data.id }}));
+          axios
+            .get(getAPI + `/${data.id}`)
+            .then((res) =>
+              navigate("/createnewpromotion", { state: { id: data.id } })
+            );
         };
-  
+
         return (
-          <EditIcon style={{ color: '#15BF81', cursor: 'pointer' }} onClick={onClick} defaultChecked/>
+          <EditIcon
+            style={{ color: "#15BF81", cursor: "pointer" }}
+            onClick={onClick}
+            defaultChecked
+          />
         );
-      }
+      },
     },
     {
       field: "active",
@@ -106,27 +117,65 @@ export default function Promotion(props) {
 
   useEffect(() => {
     const fetchData = async () => {
+      await axios.get(getDataCount).then((res) => {
+        console.log(res.data.data);
+        setCount(res.data.data);
+      });
+    };
+    fetchData();
+  });
+
+  useEffect(() => {
+    const fetchData = async () => {
       await axios
-        .get(getDataCount)
+        .get(getAPI + `/search/${search}`, {
+          headers: {
+            Authorization: `bearer ${localStorage.getItem("accessToken")}`,
+          },
+          params: {
+            pageIndex: selectedPage + 1,
+            pageSize: selectedPageSize,
+          },
+        })
         .then((res) => {
-          console.log(res.data.data);
-          setCount(res.data.data);
+          console.log(res);
+          setDataFilter(res.data.data);
         });
     };
     fetchData();
-  }, [count]);
-  
+  }, [search]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      await axios
+        .get(getAPI + `/search/count/${search}`, {
+          headers: {
+            Authorization: `bearer ${localStorage.getItem("accessToken")}`,
+          },
+        })
+        .then((res) => {
+          console.log(res.data.data);
+          setSearchCount(res.data.data);
+        });
+    };
+    fetchData();
+  });
+
   return (
     <>
       <div className="promotion-container">
-        <Navbar linkBtn="/createnewpromotion"/>
+        <Navbar
+          linkBtn="/createnewpromotion"
+          searchValue={search}
+          onChangeSearch={(e) => setSearch(e.target.value)}
+        />
         <Header title="Danh sách khuyến mãi" />
         <div className="promotion-table-container">
           <DataGrid
-            rows={data}
+            rows={search == "" ? data : dataFilter}
             columns={columns}
             pageSize={selectedPageSize}
-            rowCount={count}
+            rowCount={search == "" ? count : searchCount}
             pagination={true}
             paginationMode="server"
             page={selectedPage}

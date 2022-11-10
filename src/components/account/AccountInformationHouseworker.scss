@@ -40,7 +40,7 @@
 .accountInformation-text-container {
   position: relative;
   border: 1px solid config.$primary-color;
-  width: 1233px;
+  width: 1200px;
   height: 247px;
   float: left;
   margin-left: 88px;
@@ -61,5 +61,29 @@
     right: 16px;
     top: 16px;
     color: config.$primary-color;
+  }
+
+  .accountInfor-input {
+    padding: 12px;
+    width: 90%;
+    border-radius: 8px;
+    border: 1px solid #cdcdcd;
+    margin-bottom: 16px;
+    font-size: config.$font-size-text;
+  }
+
+  .accountInfor-btn {
+    padding: 12px 48px;
+    border: none;
+    border-radius: 16px;
+    font-size: config.$font-size-text;
+    margin-top: 36px;
+    margin-bottom: 16px;
+    margin-left: 250%;
+    &:hover {
+      background-color: config.$primary-color;
+      color: config.$secondary-color;
+      cursor: pointer;
+    }
   }
 }

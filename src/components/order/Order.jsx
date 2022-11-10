@@ -5,6 +5,7 @@ import React, { useEffect, useState } from "react";
 import Header from "../header/Header";
 import Navbar from "../nav/Navbar";
 import EditIcon from "@mui/icons-material/Edit";
+import NavbarManager from "../nav/NavbarManager";
 
 const getAPI = "https://cotam.azurewebsites.net/api/orders";
 const getDataCount = "https://cotam.azurewebsites.net/api/orders/count";
@@ -24,7 +25,7 @@ export default function Order(props) {
       headerName: "Số giờ",
       width: 300,
       renderCell: (data) => {
-        return data.value.name;
+        return data.value.duration + ' giờ';
       },
     },
     {
@@ -80,12 +81,12 @@ export default function Order(props) {
         });
     };
     fetchData();
-  }, [count]);
+  });
 
   return (
     <>
       <div className="area-container">
-        <Navbar disabled='disabled' styled={{ display: 'none' }}/>
+        <NavbarManager disabled='disabled' styled={{ display: 'none' }}/>
         <Header title="Danh sách đơn hàng" />
         <div className="area-table-container">
           <DataGrid

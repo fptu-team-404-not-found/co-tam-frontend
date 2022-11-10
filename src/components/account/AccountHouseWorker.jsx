@@ -8,9 +8,15 @@ import { DataGrid } from "@mui/x-data-grid";
 import Switch from "@mui/material/Switch";
 import HeaderHaveTab from "../HeaderHaveTab/HeaderHaveTab";
 import swal from "sweetalert";
+import NavbarManager from "../nav/NavbarManager";
+import { useNavigate } from "react-router";
+import EditIcon from "@mui/icons-material/Edit";
+import Logout from "../logout/Logout";
+import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
+import dayjs from 'dayjs';
 
 const getAPI = "https://cotam.azurewebsites.net/api/houseworkers";
-const getDataCount = "https://cotam.azurewebsites.net/api/houseworkers/count"; 
+const getDataCount = "https://cotam.azurewebsites.net/api/houseworkers/count";
 
 export default function AccountHouseWorker(props) {
   const [data, setData] = useState([]);
@@ -23,8 +29,14 @@ export default function AccountHouseWorker(props) {
   const [selectedPage, setSelectedPage] = useState(0);
   const [count, setCount] = useState(0);
   const [selectedPageSize, setSelectedPageSize] = useState(8);
+  const [dateOfBirth, setDateOfBirth] = useState(dayjs(''));
+  const [search, setSearch] = useState("");
+  const [dataFilter, setDataFilter] = useState([]);
+  const [searchCount, setSearchCount] = useState(0);
 
   const label = { inputProps: { "aria-label": "Switch demo" } };
+
+  let navigate = useNavigate();
 
   const columns = [
     { field: "name", headerName: "Họ tên", width: 300 },
@@ -50,14 +62,39 @@ export default function AccountHouseWorker(props) {
       headerName: "Công việc",
       width: 300,
       renderCell: (data) => {
-        return data.value.length !== 0 ? data.value : ['-'];
+        console.log(data.value.map((item) => item.name));
+        // return data.value[0] != null ? data.value.map((item) => item.name + ' ') : "-";
+        return data.value[0] != null ? data.value.map((item) => item.name + '. ') : "-";
+      },
+    },
+    {
+      field: "id",
+      headerName: "",
+      sortable: false,
+      width: 80,
+      renderCell: (data) => {
+        const onClick = () => {
+          axios
+            .get(getAPI + `/${data.id}`)
+            .then((res) =>
+              navigate("/accountinformation", { state: { id: data.id } })
+            );
+        };
+
+        return (
+          <EditIcon
+            style={{ color: "#15BF81", cursor: "pointer" }}
+            onClick={onClick}
+            defaultChecked
+          />
+        );
       },
     },
     {
       field: "active",
       headerName: "Action",
       sortable: false,
-      width: 200,
+      width: 120,
       renderCell: (data) => {
         const onDelete = (id) => {
           swal({
@@ -92,17 +129,31 @@ export default function AccountHouseWorker(props) {
     },
   ];
 
+  const handleChangeDate = (newValue) => {
+    setDateOfBirth(newValue);
+  };
+
   const postData = () => {
     axios
-      .post(getAPI, {
-        name,
-        email,
-        phone,
-      })
+      .post(
+        getAPI,
+        {
+          name,
+          email,
+          phone,
+          dateOfBirth
+        },
+        {
+          headers: {
+            Authorization: `bearer ${localStorage.getItem("accessToken")}`,
+          },
+        }
+      )
       .then((res) => {
         setName("");
         setEmail("");
         setPhone("");
+        setDateOfBirth("");
         setOpen(false);
         swal("Good job!", res.data.message, "success");
       });
@@ -119,6 +170,7 @@ export default function AccountHouseWorker(props) {
         })
         .then((res) => {
           setData(res.data.data);
+          console.log(res.data.data);
         });
     };
     fetchData();
@@ -126,21 +178,60 @@ export default function AccountHouseWorker(props) {
 
   useEffect(() => {
     const fetchData = async () => {
+      await axios.get(getDataCount).then((res) => {
+        setCount(res.data.data);
+      });
+    };
+    fetchData();
+  });
+
+  const getID = (id) => {
+    console.log(id);
+  };
+
+  useEffect(() => {
+    const fetchData = async () => {
       await axios
-        .get(getDataCount)
+        .get(getAPI + `/search/${search}`, {
+          headers: {
+            Authorization: `bearer ${localStorage.getItem("accessToken")}`,
+          },
+          params: {
+            pageIndex: selectedPage + 1,
+            pageSize: selectedPageSize,
+          },
+        })
         .then((res) => {
-          setCount(res.data.data);
+          console.log(res);
+          setDataFilter(res.data.data);
         });
     };
     fetchData();
-  }, [count]);
+  }, [search]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      await axios
+        .get(getAPI + `/search/count/${search}`, {
+          headers: {
+            Authorization: `bearer ${localStorage.getItem("accessToken")}`,
+          },
+        })
+        .then((res) => {
+          console.log(res.data.data);
+          setSearchCount(res.data.data);
+        });
+    };
+    fetchData();
+  });
 
   return (
     <>
       <div className="account-container">
-        <Navbar
+        <NavbarManager
           openModal2={open}
           handleOpen={handleOpen}
+          onRowClick={getID}
           handleClose={handleClose}
           valueEmail={email}
           onChangeEmail={(e) => setEmail(e.target.value)}
@@ -149,14 +240,18 @@ export default function AccountHouseWorker(props) {
           addClick={postData}
           valueName={name}
           onChangeName={(e) => setName(e.target.value)}
+          searchValue={search}
+          onChangeSearch={(e) => setSearch(e.target.value)}
+          valueDate={dateOfBirth}
+          onChangeDate={handleChangeDate}
         />
-        <HeaderHaveTab value="0" title="Danh sách tài khoản nhân viên" />
+        <HeaderHaveTab value={2} title="Danh sách tài khoản nhân viên" />
         <div className="account-table-container">
           <DataGrid
-            rows={data}
+            rows={search == "" ? data : dataFilter}
             columns={columns}
             pageSize={selectedPageSize}
-            rowCount={count}
+            rowCount={search == "" ? count : searchCount}
             pagination={true}
             paginationMode="server"
             page={selectedPage}

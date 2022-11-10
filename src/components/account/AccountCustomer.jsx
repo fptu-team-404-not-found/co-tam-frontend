@@ -12,6 +12,10 @@ import HighlightOffIcon from "@mui/icons-material/HighlightOff";
 import AddIcon from "@mui/icons-material/Add";
 import { Box } from "@mui/system";
 import swal from "sweetalert";
+import Logout from "../logout/Logout";
+import NavbarManager from "../nav/NavbarManager";
+import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
+import dayjs from 'dayjs';
 
 const getAPI = "https://cotam.azurewebsites.net/api/customers";
 const getDataCount = "https://cotam.azurewebsites.net/api/customers/count"; 
@@ -23,6 +27,11 @@ export default function AccountCustomer() {
   const handleClose = () => setOpen(false);
   const [email, setEmail] = useState("");
 
+  const [dateOfBirth, setDateOfBirth] = useState(dayjs(''));
+
+  const [search, setSearch] = useState("");
+  const [dataFilter, setDataFilter] = useState([]);
+  const [searchCount, setSearchCount] = useState(0);
 
   const [phone, setPhone] = useState("");
   const [name, setName] = useState("");
@@ -31,6 +40,10 @@ export default function AccountCustomer() {
   const [count, setCount] = useState(0);
 
   const label = { inputProps: { "aria-label": "Switch demo" } };
+
+  const handleChangeDate = (newValue) => {
+    setDateOfBirth(newValue);
+  };
 
   const columns = [
     { field: "name", headerName: "Họ tên", width: 400 },
@@ -116,7 +129,7 @@ export default function AccountCustomer() {
         });
     };
     fetchData();
-  }, [count]);
+  });
 
   const postData = () => {
     axios
@@ -124,21 +137,60 @@ export default function AccountCustomer() {
         name,
         email,
         phone,
+        dateOfBirth
       })
       .then((res) => {
         console.log(res)
         setName("");
         setEmail("");
         setPhone("");
+        setDateOfBirth("");
         setOpen(false);
         swal("Good job!", res.data.message, "success");
       });
   };
 
+  useEffect(() => {
+    const fetchData = async () => {
+      await axios
+        .get(getAPI + `/search/${search}`, {
+          headers: {
+            Authorization: `bearer ${localStorage.getItem("accessToken")}`,
+          },
+          params: {
+            pageIndex: selectedPage + 1,
+            pageSize: selectedPageSize,
+          },
+        })
+        .then((res) => {
+          console.log(res);
+          setDataFilter(res.data.data);
+        });
+    };
+    fetchData();
+  }, [search]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      await axios
+        .get(getAPI + `/search/count/${search}`, {
+          headers: {
+            Authorization: `bearer ${localStorage.getItem("accessToken")}`,
+          },
+        })
+        .then((res) => {
+          console.log(res.data.data);
+          setSearchCount(res.data.data);
+        });
+    };
+    fetchData();
+  });
+
   return (
     <>
       <div className="account-container">
-        <Navbar
+        <Logout />
+        <NavbarManager
           open={open}
           handleOpen={handleOpen}
           handleClose={handleClose}
@@ -149,14 +201,18 @@ export default function AccountCustomer() {
           addClick={postData}
           valueName={name}
           onChangeName={(e) => setName(e.target.value)}
+          searchValue={search}
+          onChangeSearch={(e) => setSearch(e.target.value)}
+          valueDate={dateOfBirth}
+          onChangeDate={handleChangeDate}
         />
-        <HeaderHaveTab value="1" title="Danh sách tài khoản khách hàng" />
+        <HeaderHaveTab value="3" title="Danh sách tài khoản khách hàng" />
         <div className="account-table-container">
           <DataGrid
-            rows={data}
+            rows={search == "" ? data : dataFilter}
             columns={columns}
             pageSize={selectedPageSize}
-            rowCount={count}
+            rowCount={search == "" ? count : searchCount}
             pagination={true}
             paginationMode="server"
             page={selectedPage}
