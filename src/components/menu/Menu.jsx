@@ -17,7 +17,6 @@ export default function Menu(props) {
             <ListItem style={props.styledPromotion} component={NavLink} to="/promotion" className="menu-list-item" >Khuyến mãi</ListItem>
             <ListItem style={props.styledBuilding} component={NavLink} to="/building" className="menu-list-item" >Tòa nhà</ListItem>
             <ListItem style={props.styledArea} component={NavLink} to="/area" className="menu-list-item" >Khu vực</ListItem>
-            <ListItem style={props.styledConfigure} component={NavLink} to="/configuration" className="menu-list-item" >Cài đặt</ListItem>
           </ul>
         ) : undefined}
       </div>

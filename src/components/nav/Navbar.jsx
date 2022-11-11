@@ -23,7 +23,11 @@ import { DesktopDatePicker } from "@mui/x-date-pickers/DesktopDatePicker";
 import dayjs from "dayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers";
 
+
+
+
 export default function Navbar(props) {
+  
   const [jobSelected, setJobSelected] = useState([]);
   const [value, setValue] = useState(dayjs(""));
 
@@ -37,6 +41,7 @@ export default function Navbar(props) {
     "Thiết bị lạnh",
     "Rèm cửa - Sofa",
   ];
+
 
   const ITEM_HEIGHT = 48;
   const ITEM_PADDING_TOP = 8;
@@ -144,7 +149,10 @@ export default function Navbar(props) {
                   type="text"
                 />
               </div>
-              <div style={{marginTop: '24px'}} className="navbar-modal-input-container">
+              <div
+                style={{ marginTop: "24px" }}
+                className="navbar-modal-input-container"
+              >
                 <LocalizationProvider dateAdapter={AdapterDayjs}>
                   <label
                     className="navbar-modal-label"
@@ -153,7 +161,7 @@ export default function Navbar(props) {
                     Ngày sinh
                   </label>
                   <DesktopDatePicker
-                  className="navbar-modal-input"
+                    className="navbar-modal-input"
                     label="Sinh nhật"
                     inputFormat="MM/DD/YYYY"
                     value={props.valueDate}
@@ -175,12 +183,12 @@ export default function Navbar(props) {
           aria-labelledby="modal-modal-title"
           aria-describedby="modal-modal-description"
         >
-          <Box id="navbar-modal-container">
+          <Box id="navbar-modal-container" style={{height: '600px'}}>
             <HighlightOffIcon
               onClick={props.handleClose}
               className="navbar-modal-close"
             />
-            <div className="navbar-modal-border">
+            <div className="navbar-modal-border" style={{height: '508px'}}>
               <h1 className="navbar-modal-heading">Thêm mới tài khoản</h1>
               <div className="navbar-modal-input-container">
                 <label
@@ -227,7 +235,10 @@ export default function Navbar(props) {
                   type="text"
                 />
               </div>
-              <div style={{marginTop: '24px'}} className="navbar-modal-input-container">
+              <div
+                style={{ marginTop: "24px" }}
+                className="navbar-modal-input-container"
+              >
                 <LocalizationProvider dateAdapter={AdapterDayjs}>
                   <label
                     className="navbar-modal-label"
@@ -310,7 +321,11 @@ export default function Navbar(props) {
                   onChange={props.onChangePhone}
                 />
               </div>
-              <div style={{marginTop: '24px'}} className="navbar-modal-input-container">
+              
+              <div
+                style={{ marginTop: "24px" }}
+                className="navbar-modal-input-container"
+              >
                 <LocalizationProvider dateAdapter={AdapterDayjs}>
                   <label
                     className="navbar-modal-label"

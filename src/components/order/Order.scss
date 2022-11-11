@@ -1,0 +1,12 @@
+.order-assign {
+    border: none;
+     padding: 8px 16px;
+     border-radius: 16px;
+     background-color: #15BF81;
+     color: #FFF;
+     margin-left: 16px;
+     &:hover {
+        background-color: #11cb87b8;
+        cursor: pointer;
+     }
+}

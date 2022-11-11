@@ -20,7 +20,18 @@ export default function Login() {
 
   let navigate = useNavigate();
 
+  useEffect(() => {
+    function start() {
+      gapi.client.init({
+        clientId: clientId,
+        scope: "",
+      });
+    }
+    gapi.load("client: auth2", start);
+  });
+
   const onSuccess = (res) => {
+    console.log(res.profileObj.email);
     setProfile(res.profileObj.email);
   };
 
@@ -33,30 +44,18 @@ export default function Login() {
   };
 
   useEffect(() => {
-    function start() {
-      gapi.client.init({
-        clientId: clientId,
-        scope: "",
-      });
-    }
-    gapi.load("client: auth2", start);
-    
-  });
-
-  useEffect(() => {
-    const fetchData = async () => {
-      await axios
+    const fetchData = () => {
+      axios
         .get(getAPI, {
           params: {
             email: profile,
           },
         })
-        // .catch(function (error) {
-        //   if (error.response.data.data == null) {
-        //     swal('Đăng nhập thất bại', 'Hãy thử đăng nhập lại', "error")
-        //     setProfile(null);
-        //   }
-        // })
+        .catch(function (error) {
+          if (error.response.data.data == null) {
+            setProfile(null);
+          }
+        })
         .then((res) => {
           if (res.data.data !== null) {
             // setAccessToken(res.data.data.accessToken);

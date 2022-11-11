@@ -16,6 +16,9 @@ import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
 import dayjs from 'dayjs';
 
 const getAPI = "https://cotam.azurewebsites.net/api/managers";
+
+const getAreaAPI = "https://cotam.azurewebsites.net/api/areas";
+
 const getDataCount = "https://cotam.azurewebsites.net/api/managers/count";
 
 export default function AccountManager() {
@@ -28,8 +31,10 @@ export default function AccountManager() {
   const [name, setName] = useState("");
   const [search, setSearch] = useState("");
 
-  const [dateOfBirth, setDateOfBirth] = useState(dayjs(''));
+  const [area, setArea] = useState("");
+  const [areaData, setAreaData] = useState([]);
 
+  const [dateOfBirth, setDateOfBirth] = useState(dayjs(''));
 
   const [dataFilter, setDataFilter] = useState([]);
 
@@ -39,6 +44,8 @@ export default function AccountManager() {
   const [selectedPageSize, setSelectedPageSize] = useState(8);
 
   const label = { inputProps: { "aria-label": "Switch demo" } };
+
+  
 
   const columns = [
     { field: "name", headerName: "Họ tên", width: 400 },
@@ -107,6 +114,29 @@ export default function AccountManager() {
     },
   ];
 
+  const getArea = useEffect(() => {
+    const fetchData = async () => {
+      await axios
+        .get(getAreaAPI, {
+          params: {
+            pageIndex: selectedPage + 1,
+            pageSize: selectedPageSize,
+          },
+        })
+        .then((res) => {
+          console.log("hi" + res);
+          setAreaData(res.data.data);
+        });
+    };
+    fetchData();
+  }, []);
+
+  console.log("hi " + areaData);
+
+  const handleChangeAreaResult = (event) => {
+    setArea(event.target.value);
+    console.log(event.target.value);
+  };
   
   const handleChangeDate = (newValue) => {
     setDateOfBirth(newValue);
@@ -228,6 +258,7 @@ export default function AccountManager() {
           onChangeSearch={(e) => setSearch(e.target.value)}
           valueDate={dateOfBirth}
           onChangeDate={handleChangeDate}
+          
         />
         <Header title="Danh sách tài khoản quản lý" />
         <div className="account-table-container">
