@@ -34,9 +34,15 @@ export default function AccountHouseWorker(props) {
   const [dataFilter, setDataFilter] = useState([]);
   const [searchCount, setSearchCount] = useState(0);
 
+  const [area, setArea] = useState('');
+
   const label = { inputProps: { "aria-label": "Switch demo" } };
 
   let navigate = useNavigate();
+
+  const handleChangeData = (event) => {
+    setArea(event.target.value);
+  };
 
   const columns = [
     { field: "name", headerName: "Họ tên", width: 300 },
@@ -53,6 +59,14 @@ export default function AccountHouseWorker(props) {
       field: "dateOfBirth",
       headerName: "Ngày sinh nhật",
       width: 300,
+      renderCell: (data) => {
+        return data.value != null ? data.value : "-";
+      },
+    },
+    {
+      field: "areaId",
+      headerName: "Khu vực",
+      width: 160,
       renderCell: (data) => {
         return data.value != null ? data.value : "-";
       },
@@ -141,7 +155,8 @@ export default function AccountHouseWorker(props) {
           name,
           email,
           phone,
-          dateOfBirth
+          dateOfBirth,
+          areaId: area
         },
         {
           headers: {
@@ -154,6 +169,7 @@ export default function AccountHouseWorker(props) {
         setEmail("");
         setPhone("");
         setDateOfBirth("");
+        setArea("");
         setOpen(false);
         swal("Good job!", res.data.message, "success");
       });
@@ -244,6 +260,8 @@ export default function AccountHouseWorker(props) {
           onChangeSearch={(e) => setSearch(e.target.value)}
           valueDate={dateOfBirth}
           onChangeDate={handleChangeDate}
+          area={area}
+          handleChangeArea={handleChangeData}
         />
         <HeaderHaveTab value={2} title="Danh sách tài khoản nhân viên" />
         <div className="account-table-container">

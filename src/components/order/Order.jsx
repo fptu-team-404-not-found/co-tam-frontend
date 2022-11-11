@@ -46,8 +46,6 @@ export default function Order(props) {
     setAssignPerson(event.target.value);
   };
 
-  console.log(assignPerson);
-
   const columns = [
     {
       field: "id",
@@ -95,7 +93,6 @@ export default function Order(props) {
       headerName: "Giao việc",
       width: 200,
       renderCell: (item) => {
-        console.log(item.value);
         const getAssign = () => {
           axios.get(getAssignAPI + `/${item.id}`).then((res) => {
             // console.log(res.data.data);
@@ -135,7 +132,6 @@ export default function Order(props) {
         .then((res) => {
           // console.log(res.data.data.map(item => item.id));
           setId(res.data.data.map((item) => item.id));
-          console.log(res.data.data);
           setData(res.data.data);
         });
     };
@@ -145,7 +141,6 @@ export default function Order(props) {
   useEffect(() => {
     const fetchData = async () => {
       await axios.get(getDataCount).then((res) => {
-        console.log(res.data.data);
         setCount(res.data.data);
       });
     };
@@ -158,7 +153,7 @@ export default function Order(props) {
       .then((res) => {
         console.log(res.data.data);
         setPeople(res.data.data);
-        swal("Good job!", res.data.message, "success");
+        // swal("Good job!", res.data.message, "success");
         window.location.reload();
       });
   };

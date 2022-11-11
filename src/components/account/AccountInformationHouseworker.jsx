@@ -26,6 +26,11 @@ const getAPI = "https://cotam.azurewebsites.net/api/houseworkers";
 const getTagAPI = "https://cotam.azurewebsites.net/api/worker-tag";
 // const getCount = "https://cotam.azurewebsites.net/api/worker-tag/count";
 
+const getAreaAPI = "https://cotam.azurewebsites.net/api/areas";
+const getDataCount = "https://cotam.azurewebsites.net/api/areas/count";
+
+
+
 export default function AccountInformationHouseworker() {
   const navigate = useNavigate();
   const [name, setName] = useState("");
@@ -36,9 +41,45 @@ export default function AccountInformationHouseworker() {
   const [workerTags, setWorkerTags] = useState("");
   const [workerTagsArray, setWorkerTagsArray] = useState([]);
 
+  const [data, setData] = useState([]);
+  const [area, setArea] = useState("");
+  const [selectedPage, setSelectedPage] = useState(0);
+  const [selectedPageSize, setSelectedPageSize] = useState(8);
+  const [count, setCount] = useState(0);
+
   const handleChangeWorkerTag = (event) => {
     setWorkerTags(event.target.value);
   };
+
+  const handleChangeArea = (event) => {
+    console.log(event.target.value);
+    setArea(event.target.value);
+  };
+
+  const getData = useEffect(() => {
+    const fetchData = async () => {
+      await axios
+        .get(getAreaAPI, {
+          params: {
+            pageIndex: selectedPage + 1,
+            pageSize: selectedPageSize,
+          },
+        })
+        .then((res) => {
+          setData(res.data.data);
+        });
+    };
+    fetchData();
+  }, [data, selectedPage, selectedPageSize]);
+  
+  useEffect(() => {
+    const fetchData = async () => {
+      await axios.get(getDataCount).then((res) => {
+        setCount(res.data.data);
+      });
+    };
+    fetchData();
+  });
 
   useEffect(() => {
       const fetchData = () => {
@@ -66,6 +107,7 @@ export default function AccountInformationHouseworker() {
           setEmail(res.data.data.email);
           setPhone(res.data.data.phone);
           setWorkerTags(res.data.data.workerTags.map((item) => item.name));
+          setArea(res.data.data.areaId);
         });
       };
       fetchData();
@@ -79,6 +121,7 @@ export default function AccountInformationHouseworker() {
       color="inherit"
       to="/accounthouseworker"
       onClick={handleClick}
+      style={{ cursor: 'pointer' }}
     >
       Danh sách tài khoản
     </Link>,
@@ -120,6 +163,7 @@ export default function AccountInformationHouseworker() {
           name,
           email,
           phone,
+          areaId: area
         },
         {
           headers: {
@@ -204,10 +248,27 @@ export default function AccountInformationHouseworker() {
             </td>
           </tr>
           <tr>
+            <th>Khu vực</th>
+            <td>
+              <FormControl style={{ margin: "0", width: "90%" }} sx={{ m: 1 }}>
+                <Select
+                  labelId="demo-multiple-chip-label"
+                  name="workerTag"
+                  id="demo-multiple-chip"
+                  value={area}
+                  onChange={handleChangeArea}
+                >
+                  {data.map((result) => (
+                  <MenuItem value={result.id}>{result.name}</MenuItem>
+              ))}
+                </Select>
+              </FormControl>
+            </td>
+          </tr>
+          <tr>
             <th>Công việc</th>
             <td>
               <FormControl style={{ margin: "0", width: "90%" }} sx={{ m: 1 }}>
-                <InputLabel id="demo-multiple-chip-label">Jobs</InputLabel>
                 <Select
                   labelId="demo-multiple-chip-label"
                   name="workerTag"
@@ -222,6 +283,7 @@ export default function AccountInformationHouseworker() {
               </FormControl>
             </td>
           </tr>
+          
           <button onClick={updateData} className="accountInfor-btn">
             Lưu
           </button>

@@ -10,7 +10,7 @@ import {
   Select,
   TextField,
 } from "@mui/material";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Menu from "../menu/Menu";
 import "./Navbar.scss";
 import AddIcon from "@mui/icons-material/Add";
@@ -19,13 +19,21 @@ import HighlightOffIcon from "@mui/icons-material/HighlightOff";
 import { NavLink } from "react-router-dom";
 import MenuManager from "../menu/MenuManager";
 import Logout from "../logout/Logout";
-import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
-import dayjs from 'dayjs';
+import { DesktopDatePicker } from "@mui/x-date-pickers/DesktopDatePicker";
+import dayjs from "dayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import axios from "axios";
+
+const getAPI = "https://cotam.azurewebsites.net/api/areas";
+const getDataCount = "https://cotam.azurewebsites.net/api/areas/count";
 
 export default function NavbarManager(props) {
   const [jobSelected, setJobSelected] = useState([]);
+  const [data, setData] = useState([]);
+  const [selectedPage, setSelectedPage] = useState(0);
+  const [selectedPageSize, setSelectedPageSize] = useState(8);
+  const [count, setCount] = useState(0);
 
   const jobs = [
     "Dọn dẹp vệ sinh",
@@ -51,6 +59,33 @@ export default function NavbarManager(props) {
     } = event;
     setJobSelected(typeof value === "string" ? value.split(",") : value);
   };
+
+  const getData = useEffect(() => {
+    const fetchData = async () => {
+      await axios
+        .get(getAPI, {
+          params: {
+            pageIndex: selectedPage + 1,
+            pageSize: selectedPageSize,
+          },
+        })
+        .then((res) => {
+          console.log(res.data.data.length);
+          setData(res.data.data);
+        });
+    };
+    fetchData();
+  }, [data, selectedPage, selectedPageSize]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      await axios.get(getDataCount).then((res) => {
+        console.log(res.data.data);
+        setCount(res.data.data);
+      });
+    };
+    fetchData();
+  });
 
   return (
     <>
@@ -140,7 +175,10 @@ export default function NavbarManager(props) {
                   type="text"
                 />
               </div>
-              <div style={{marginTop: '24px'}} className="navbar-modal-input-container">
+              <div
+                style={{ marginTop: "24px" }}
+                className="navbar-modal-input-container"
+              >
                 <LocalizationProvider dateAdapter={AdapterDayjs}>
                   <label
                     className="navbar-modal-label"
@@ -158,7 +196,9 @@ export default function NavbarManager(props) {
                   />
                 </LocalizationProvider>
               </div>
-              <button onClick={props.addClick} className="navbar-modal-create">TẠO MỚI</button>
+              <button onClick={props.addClick} className="navbar-modal-create">
+                TẠO MỚI
+              </button>
             </div>
           </Box>
         </Modal>
@@ -221,7 +261,10 @@ export default function NavbarManager(props) {
                   type="text"
                 />
               </div>
-              <div style={{marginTop: '24px'}} className="navbar-modal-input-container">
+              <div
+                style={{ marginTop: "24px" }}
+                className="navbar-modal-input-container"
+              >
                 <LocalizationProvider dateAdapter={AdapterDayjs}>
                   <label
                     className="navbar-modal-label"
@@ -230,7 +273,6 @@ export default function NavbarManager(props) {
                     Ngày sinh
                   </label>
                   <DesktopDatePicker
-                    label="Sinh nhật"
                     className="navbar-modal-input"
                     inputFormat="MM/DD/YYYY"
                     value={props.valueDate}
@@ -239,7 +281,9 @@ export default function NavbarManager(props) {
                   />
                 </LocalizationProvider>
               </div>
-              <button onClick={props.addClick} className="navbar-modal-create">TẠO MỚI</button>
+              <button onClick={props.addClick} className="navbar-modal-create">
+                TẠO MỚI
+              </button>
             </div>
           </Box>
         </Modal>
@@ -250,12 +294,12 @@ export default function NavbarManager(props) {
           aria-labelledby="modal-modal-title"
           aria-describedby="modal-modal-description"
         >
-          <Box id="navbar-modal-container">
+          <Box id="navbar-modal-container" style={{ height: "660px" }}>
             <HighlightOffIcon
               onClick={props.handleClose}
               className="navbar-modal-close"
             />
-            <div className="navbar-modal-border">
+            <div className="navbar-modal-border" style={{ height: "560px" }}>
               <h1 className="navbar-modal-heading">Thêm mới tài khoản</h1>
               <div className="navbar-modal-input-container">
                 <label
@@ -302,7 +346,10 @@ export default function NavbarManager(props) {
                   onChange={props.onChangePhone}
                 />
               </div>
-              <div style={{marginTop: '24px'}} className="navbar-modal-input-container">
+              <div
+                style={{ marginTop: "24px" }}
+                className="navbar-modal-input-container"
+              >
                 <LocalizationProvider dateAdapter={AdapterDayjs}>
                   <label
                     className="navbar-modal-label"
@@ -311,7 +358,6 @@ export default function NavbarManager(props) {
                     Ngày sinh
                   </label>
                   <DesktopDatePicker
-                    label="Sinh nhật"
                     className="navbar-modal-input"
                     inputFormat="MM/DD/YYYY"
                     value={props.valueDate}
@@ -320,32 +366,43 @@ export default function NavbarManager(props) {
                   />
                 </LocalizationProvider>
               </div>
-              {/* <div className="navbar-modal-input-container">
+              <div
+                style={{ marginTop: "16px"}}
+                className="navbar-modal-input-container"
+              >
                 <label
                   className="navbar-modal-label"
-                  htmlFor="navbar-modal-select"
+                  htmlFor="navbar-modal-phone"
                 >
-                  Công việc
+                  Khu vực
                 </label>
-                <FormControl>
-                  <Select
-                    className="navbar-modal-select"
-                    multiple
-                    value={jobSelected}
-                    onChange={handleChange}
-                    renderValue={(selected) => selected.join(", ")}
-                    MenuProps={MenuProps}
-                  >
-                    {jobs.map((job) => (
-                      <MenuItem key={job} value={job}>
-                        <Checkbox checked={jobSelected.indexOf(job) > -1} />
-                        <ListItemText primary={job} />
-                      </MenuItem>
-                    ))}
-                  </Select>
-                </FormControl>
-              </div> */}
-              <button onClick={props.addClick} className="navbar-modal-create">TẠO MỚI</button>
+                <Select
+                  style={{
+                    backgroundColor: "#FFF",
+                    textAlign: "left",
+                    color: "#15BF81",
+                  }}
+                  className="navbar-modal-input"
+                  value={props.area}
+                  onChange={props.handleChangeArea}
+                >
+                  {data.map((result) => (
+                    <MenuItem
+                      style={{
+                        backgroundColor: "#FFF",
+                        textAlign: "left",
+                        color: "#15BF81",
+                      }}
+                      value={result.id}
+                    >
+                      {result.name}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </div>
+              <button onClick={props.addClick} className="navbar-modal-create">
+                TẠO MỚI
+              </button>
             </div>
           </Box>
         </Modal>
